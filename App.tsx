@@ -25,8 +25,8 @@ export default function App() {
   const handleFlip = () => setType(type === Camera.Constants.Type.back ? Camera.Constants.Type.front : Camera.Constants.Type.back);
 
   const handleFacesDetected = (result: FaceDetectionResult) => {
-    // console.log('its a face');
-    setFaceRes(result.faces[0]);
+    const data = result.faces[0];
+    setFaceRes(data);
   };
 
   const boxStyle = () => ({
