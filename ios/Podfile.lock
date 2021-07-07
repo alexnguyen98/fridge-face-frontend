@@ -380,7 +380,7 @@ PODS:
     - Yoga
   - RNScreens (3.0.0):
     - React-Core
-  - TensorFlowLite (1.13.1)
+  - TensorFlowLite (1.12.0)
   - TfliteReactNative (0.0.4):
     - React
     - TensorFlowLite
@@ -452,6 +452,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - TensorFlowLite (= 1.12.0)
   - TfliteReactNative (from `../node_modules/tflite-react-native/ios`)
   - UMAppLoader (from `../node_modules/unimodules-app-loader/ios`)
   - UMBarCodeScannerInterface (from `../node_modules/unimodules-barcode-scanner-interface/ios`)
@@ -654,7 +655,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNReanimated: 70f662b5232dd5d19ccff581e919a54ea73df51c
   RNScreens: e8e8dd0588b5da0ab57dcca76ab9b2d8987757e0
-  TensorFlowLite: 8b9dc4eb32eac0f8cb660c66bca7604da56dcc5a
+  TensorFlowLite: e81aef029750aa46b42ad16553fa4cddd81498cc
   TfliteReactNative: 57b925d87235478b7231e34dc96032286a67eada
   UMAppLoader: fe2708bb0ac5cd70052bc207d06aa3b7e72b9e97
   UMBarCodeScannerInterface: 79f92bea5f7af39b381a4c82298105ceb537408a
@@ -671,6 +672,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 203c11259d2699b5b3a4eda4adbc466f5cb5c561
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: 55db1e0e5f64d0fdeda49a488ab58d9e282ceff5
+PODFILE CHECKSUM: 3544792149794f7c454d2b40cbfec6871a977d2a
 
 COCOAPODS: 1.9.3

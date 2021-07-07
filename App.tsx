@@ -3,6 +3,10 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Camera, FaceDetectionResult, PermissionStatus } from 'expo-camera';
 import * as FaceDetector from 'expo-face-detector';
 import { Face } from 'expo-camera/build/Camera.types';
+//@ts-ignore
+import Tflite from 'tflite-react-native';
+
+const tflite = new Tflite();
 
 const faceDetectorSettings = {
   mode: FaceDetector.Constants.Mode.accurate,
@@ -29,6 +33,19 @@ export default function App() {
     setFaceRes(data);
   };
 
+  const handleLoad = () => {
+    tflite.loadModel(
+      {
+        model: 'models/facenet.tflite',
+        labels: '',
+      },
+      (err: any, res: any) => {
+        if (err) console.log(err);
+        else console.log(res);
+      }
+    );
+  };
+
   const boxStyle = () => ({
     width: faceRes?.bounds.size.width,
     height: faceRes?.bounds.size.height,
@@ -53,6 +70,9 @@ export default function App() {
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={handleFlip}>
             <Text style={styles.text}> Flip </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleLoad}>
+            <Text style={styles.text}> Load model </Text>
           </TouchableOpacity>
           {/* @ts-ignore */}
           {faceRes && <View style={boxStyle()}></View>}
