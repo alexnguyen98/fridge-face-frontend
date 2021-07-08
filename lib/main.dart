@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 
 Future<void> main() async {
   // Ensure that plugin services are initialized so that `availableCameras()`
@@ -11,8 +14,9 @@ Future<void> main() async {
   // Obtain a list of the available cameras on the device.
   final cameras = await availableCameras();
 
-  // Get a specific camera from the list of available cameras.
-  final firstCamera = cameras[1];
+  // Get the front camera
+  final firstCamera = cameras.firstWhere(
+      (camera) => camera.lensDirection == CameraLensDirection.front);
 
   runApp(
     MaterialApp(
@@ -39,8 +43,15 @@ class TakePictureScreen extends StatefulWidget {
 }
 
 class TakePictureScreenState extends State<TakePictureScreen> {
+  final FaceDetector _faceDetector = FirebaseVision.instance
+      .faceDetector(FaceDetectorOptions(mode: FaceDetectorMode.accurate));
+
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
+
+  bool _isDetecting = false;
+
+  late List<Face> _faces;
 
   @override
   void initState() {
@@ -48,21 +59,45 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     // To display the current output from the Camera,
     // create a CameraController.
     _controller = CameraController(
-      // Get a specific camera from the list of available cameras.
-      widget.camera,
-      // Define the resolution to use.
-      ResolutionPreset.medium,
-    );
+        // Get a specific camera from the list of available cameras.
+        widget.camera,
+        // Define the resolution to use.
+        ResolutionPreset.medium,
+        enableAudio: false);
 
     // Next, initialize the controller. This returns a Future.
-    _initializeControllerFuture = _controller.initialize();
+    _initializeControllerFuture =
+        _controller.initialize().then((_) => _frameFace());
   }
 
   @override
   void dispose() {
-    // Dispose of the controller when the widget is disposed.
+    // Dispose of the controller and faceDetector when the widget is disposed.
     _controller.dispose();
+    _faceDetector.close();
     super.dispose();
+  }
+
+  // Draws frame around the face
+  void _frameFace() {
+    _controller.startImageStream((image) async {
+      // If it's currently busy, avoid overprocessing
+      if (_isDetecting) return;
+      _isDetecting = true;
+
+      try {
+        // Processsing the image
+        List<Face> faces = await _faceDetector.processImage(
+            FirebaseVisionImage.fromBytes(_concatenatePlanes(image.planes),
+                _buildMetaData(image, ImageRotation.rotation0)));
+        setState(() {
+          _faces = faces;
+        });
+      } catch (err) {
+        print(err);
+      }
+      _isDetecting = false;
+    });
   }
 
   @override
@@ -77,7 +112,10 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             // If the Future is complete, display the preview.
-            return CameraPreview(_controller);
+            return Stack(children: [
+              CameraPreview(_controller),
+              if (_faces.length > 0) Frame(face: _faces[0])
+            ]);
           } else {
             // Otherwise, display a loading indicator.
             return const Center(child: CircularProgressIndicator());
@@ -147,4 +185,54 @@ class DisplayPictureScreen extends StatelessWidget {
       body: Image.file(File(imagePath)),
     );
   }
+}
+
+class Frame extends StatelessWidget {
+  final Face face;
+
+  const Frame({Key? key, required this.face}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: face.boundingBox.top,
+      left: face.boundingBox.left,
+      width: face.boundingBox.width,
+      height: face.boundingBox.height,
+      child: Container(
+          decoration: BoxDecoration(
+              border: Border.all(color: Colors.red.shade400, width: 3.0)),
+          child: Text(
+            "Face",
+            style: TextStyle(
+                color: Colors.red.shade400, fontWeight: FontWeight.bold),
+          )),
+    );
+  }
+}
+
+Uint8List _concatenatePlanes(List<Plane> planes) {
+  final WriteBuffer allBytes = WriteBuffer();
+  planes.forEach((Plane plane) => allBytes.putUint8List(plane.bytes));
+  return allBytes.done().buffer.asUint8List();
+}
+
+FirebaseVisionImageMetadata _buildMetaData(
+  CameraImage image,
+  ImageRotation rotation,
+) {
+  return FirebaseVisionImageMetadata(
+    rawFormat: image.format.raw,
+    size: Size(image.width.toDouble(), image.height.toDouble()),
+    rotation: rotation,
+    planeData: image.planes.map(
+      (Plane plane) {
+        return FirebaseVisionImagePlaneMetadata(
+          bytesPerRow: plane.bytesPerRow,
+          height: plane.height,
+          width: plane.width,
+        );
+      },
+    ).toList(),
+  );
 }

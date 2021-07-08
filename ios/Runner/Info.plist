@@ -43,5 +43,7 @@
 	<false/>
 	<key>NSCameraUsageDescription</key>
 	<string>Explanation on why the camera access is needed.</string>
+	<key>FIREBASE_ANALYTICS_COLLECTION_ENABLED</key>
+	<false/>
 </dict>
 </plist>
