@@ -12,7 +12,6 @@ const faceDetectorSettings = {
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState(false);
-  const [type, setType] = useState(Camera.Constants.Type.back);
   const [faceRes, setFaceRes] = useState<Face | null>(null);
 
   useEffect(() => {
@@ -22,11 +21,13 @@ export default function App() {
     })();
   }, []);
 
-  const handleFlip = () => setType(type === Camera.Constants.Type.back ? Camera.Constants.Type.front : Camera.Constants.Type.back);
-
   const handleFacesDetected = (result: FaceDetectionResult) => {
     const data = result.faces[0];
     setFaceRes(data);
+  };
+
+  const handleLoad = () => {
+    console.log('gay');
   };
 
   const boxStyle = () => ({
@@ -49,10 +50,15 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} type={type} onFacesDetected={handleFacesDetected} faceDetectorSettings={faceDetectorSettings}>
+      <Camera
+        style={styles.camera}
+        type={Camera.Constants.Type.front}
+        onFacesDetected={handleFacesDetected}
+        faceDetectorSettings={faceDetectorSettings}
+      >
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={handleFlip}>
-            <Text style={styles.text}> Flip </Text>
+          <TouchableOpacity style={styles.button} onPress={handleLoad}>
+            <Text style={styles.text}>Load model</Text>
           </TouchableOpacity>
           {/* @ts-ignore */}
           {faceRes && <View style={boxStyle()}></View>}
@@ -75,6 +81,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   button: {
+    zIndex: 1,
     padding: 10,
     backgroundColor: 'black',
     alignSelf: 'flex-end',
