@@ -14,8 +14,20 @@
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		96905EF65AED1B983A6B3ABC /* libPods-fridgefacev1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-fridgefacev1.a */; };
 		96ED314CDF174242B2EC715A /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA6C72397AA43F2814366B6 /* noop-file.swift */; };
+		AF66FBF42697D70E008B719B /* models in Resources */ = {isa = PBXBuildFile; fileRef = AF66FBF22697D70E008B719B /* models */; };
+		AF7049BA2697CE040070206A /* libTfliteReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF7049B72697CDCE0070206A /* libTfliteReactNative.a */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AF7049B62697CDCE0070206A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AF7049B22697CDCE0070206A /* TfliteReactNative.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = TfliteReactNative;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
@@ -31,6 +43,8 @@
 		7A4D352CD337FB3A3BF06240 /* Pods-fridgefacev1.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-fridgefacev1.release.xcconfig"; path = "Target Support Files/Pods-fridgefacev1/Pods-fridgefacev1.release.xcconfig"; sourceTree = "<group>"; };
 		8BA6C72397AA43F2814366B6 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "fridgefacev1/noop-file.swift"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = fridgefacev1/SplashScreen.storyboard; sourceTree = "<group>"; };
+		AF66FBF22697D70E008B719B /* models */ = {isa = PBXFileReference; lastKnownFileType = folder; name = models; path = ../models; sourceTree = "<group>"; };
+		AF7049B22697CDCE0070206A /* TfliteReactNative.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TfliteReactNative.xcodeproj; path = "../node_modules/tflite-react-native-alternative/ios/TfliteReactNative.xcodeproj"; sourceTree = "<group>"; };
 		B20972968767487586BA16AD /* fridgefacev1-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "fridgefacev1-Bridging-Header.h"; path = "fridgefacev1/fridgefacev1-Bridging-Header.h"; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -42,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF7049BA2697CE040070206A /* libTfliteReactNative.a in Frameworks */,
 				96905EF65AED1B983A6B3ABC /* libPods-fridgefacev1.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -80,6 +95,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				AF7049B22697CDCE0070206A /* TfliteReactNative.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -87,6 +103,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				AF66FBF22697D70E008B719B /* models */,
 				13B07FAE1A68108700A75B9A /* fridgefacev1 */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
@@ -102,6 +119,14 @@
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* fridgefacev1.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AF7049B32697CDCE0070206A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AF7049B72697CDCE0070206A /* libTfliteReactNative.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -157,6 +182,7 @@
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = SW7D55SJN6;
 						LastSwiftMigration = 1120;
 					};
 				};
@@ -172,6 +198,12 @@
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = AF7049B32697CDCE0070206A /* Products */;
+					ProjectRef = AF7049B22697CDCE0070206A /* TfliteReactNative.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* fridgefacev1 */,
@@ -179,11 +211,22 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXReferenceProxy section */
+		AF7049B72697CDCE0070206A /* libTfliteReactNative.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libTfliteReactNative.a;
+			remoteRef = AF7049B62697CDCE0070206A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
 /* Begin PBXResourcesBuildPhase section */
 		13B07F8E1A680F5B00A75B9A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF66FBF42697D70E008B719B /* models in Resources */,
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
@@ -305,6 +348,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = fridgefacev1/fridgefacev1.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = SW7D55SJN6;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -336,6 +380,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = fridgefacev1/fridgefacev1.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = SW7D55SJN6;
 				INFOPLIST_FILE = fridgefacev1/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

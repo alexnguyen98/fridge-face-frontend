@@ -452,6 +452,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - TensorFlowLite (= 1.13.1)
   - TfliteReactNative (from `../node_modules/tflite-react-native-alternative/ios`)
   - UMAppLoader (from `../node_modules/unimodules-app-loader/ios`)
   - UMBarCodeScannerInterface (from `../node_modules/unimodules-barcode-scanner-interface/ios`)
@@ -671,6 +672,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 203c11259d2699b5b3a4eda4adbc466f5cb5c561
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: 55db1e0e5f64d0fdeda49a488ab58d9e282ceff5
+PODFILE CHECKSUM: 70b2eebd2ab2c8faa78cb5bb22495d602bb4feb5
 
 COCOAPODS: 1.10.1

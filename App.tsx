@@ -3,6 +3,10 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Camera, FaceDetectionResult, PermissionStatus } from 'expo-camera';
 import * as FaceDetector from 'expo-face-detector';
 import { Face } from 'expo-camera/build/Camera.types';
+//@ts-ignore
+import TfliteReactNative from 'tflite-react-native-alternative'; // TODO: add types
+
+const tflite = new TfliteReactNative();
 
 const faceDetectorSettings = {
   mode: FaceDetector.Constants.Mode.accurate,
@@ -27,7 +31,15 @@ export default function App() {
   };
 
   const handleLoad = () => {
-    console.log('gay');
+    tflite.loadModel(
+      {
+        model: 'models/facenet.tflite',
+      },
+      (err: any, res: any) => {
+        if (err) console.log(err);
+        else console.log(res);
+      }
+    );
   };
 
   const boxStyle = () => ({

@@ -8,6 +8,9 @@ target 'fridgefacev1' do
   use_unimodules!
   config = use_native_modules!
 
+  pod 'TensorFlowLite', '1.13.1'
+  pod 'TfliteReactNative', :path => '../node_modules/tflite-react-native-alternative/ios'
+
   use_react_native!(:path => config["reactNativePath"])
 
   # Uncomment to opt-in to using Flipper
