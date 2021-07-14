@@ -10,8 +10,11 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "expo-camera": "^11.2.1",
+    "expo-face-detector": "^10.1.1",
     "react": "17.0.1",
-    "react-native": "0.64.1"
+    "react-native": "0.64.1",
+    "react-native-unimodules": "^0.14.5"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
