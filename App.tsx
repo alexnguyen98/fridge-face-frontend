@@ -3,6 +3,10 @@ import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {Camera, FaceDetectionResult, PermissionStatus} from 'expo-camera';
 import * as FaceDetector from 'expo-face-detector';
 import {Face} from 'expo-camera/build/Camera.types';
+// @ts-ignore
+import Tflite from 'tflite-react-native-alternative';
+
+const tflite = new Tflite();
 
 const faceDetectorSettings = {
   mode: FaceDetector.Constants.Mode.accurate,
@@ -34,7 +38,21 @@ export default function App() {
     setFaceRes(data);
   };
 
-  const handleLoad = () => {};
+  const handleLoad = () => {
+    tflite.loadModel(
+      {
+        model: 'models/facenet.tflite',
+        numThreads: 1, // defaults to 1
+      },
+      (err: any, res: any) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(res);
+        }
+      },
+    );
+  };
 
   const boxStyle = () => ({
     width: faceRes?.bounds.size.width,

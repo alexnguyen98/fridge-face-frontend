@@ -20,6 +20,8 @@ target 'fridgeface_v1' do
   # you should disable the next line.
   use_flipper!()
 
+  pod 'TensorFlowLite', '1.13.1'
+  pod 'TfliteReactNative', :path => '../node_modules/tflite-react-native-alternative/ios'
   post_install do |installer|
     react_native_post_install(installer)
   end
