@@ -79,12 +79,20 @@ class _CameraViewState extends State<CameraView> {
     if (_controller?.value.isInitialized == false) {
       return Container();
     }
+
+    final size = MediaQuery.of(context).size;
+    var scale = size.aspectRatio * (_controller?.value.aspectRatio ?? 1);
+    if (scale < 1) scale = 1 / scale;
+
     return Container(
       color: Colors.black,
       child: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          CameraPreview(_controller!),
+          Transform.scale(
+            scale: scale,
+            child: Center(child: CameraPreview(_controller!)),
+          ),
           if (widget.customPaint != null) widget.customPaint!,
         ],
       ),
