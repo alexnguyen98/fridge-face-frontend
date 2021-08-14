@@ -37,6 +37,7 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
   }
 
   Future<void> processImage(InputImage inputImage) async {
+    // decrease framerate here
     if (isBusy) return;
     isBusy = true;
     final faces = await faceDetector.processImage(inputImage);
