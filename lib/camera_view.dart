@@ -12,12 +12,14 @@ class CameraView extends StatefulWidget {
       required this.title,
       required this.customPaint,
       required this.onImage,
+      this.onClick,
       this.initialDirection = CameraLensDirection.back})
       : super(key: key);
 
   final String title;
   final CustomPaint? customPaint;
   final Function(InputImage inputImage) onImage;
+  final Function()? onClick;
   final CameraLensDirection initialDirection;
 
   @override
@@ -26,8 +28,11 @@ class CameraView extends StatefulWidget {
 
 class _CameraViewState extends State<CameraView> {
   CameraController? _controller;
-  File? _image;
   int _cameraIndex = 0;
+
+  double unprocessedTime = 0;
+  static const int LARGE_CONST = 100000000000000;
+  static const double UPDATE_CAP = 0.5;
 
   @override
   void initState() {
@@ -61,18 +66,26 @@ class _CameraViewState extends State<CameraView> {
 
   Widget? _floatingActionButton() {
     if (cameras.length == 1) return null;
-    return Container(
-        height: 70.0,
-        width: 70.0,
-        child: FloatingActionButton(
-          child: Icon(
-            Platform.isIOS
-                ? Icons.flip_camera_ios_outlined
-                : Icons.flip_camera_android_outlined,
-            size: 40,
-          ),
-          onPressed: _switchLiveCamera,
-        ));
+    return Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+      FloatingActionButton(
+        heroTag: "switch",
+        child: Icon(
+          Platform.isIOS
+              ? Icons.flip_camera_ios_outlined
+              : Icons.flip_camera_android_outlined,
+          size: 40,
+        ),
+        onPressed: _switchLiveCamera,
+      ),
+      SizedBox(
+        width: 10,
+      ),
+      FloatingActionButton(
+        heroTag: "action",
+        onPressed: widget.onClick,
+        child: const Icon(Icons.portrait),
+      ),
+    ]);
   }
 
   Widget _liveFeedBody() {
@@ -131,6 +144,14 @@ class _CameraViewState extends State<CameraView> {
   }
 
   Future _processCameraImage(CameraImage image) async {
+    // decrease framerate here
+    int lastTime = DateTime.now().millisecondsSinceEpoch;
+    unprocessedTime = unprocessedTime + lastTime;
+
+    if ((unprocessedTime / LARGE_CONST) <= UPDATE_CAP) return;
+
+    unprocessedTime -= LARGE_CONST * UPDATE_CAP;
+
     final WriteBuffer allBytes = WriteBuffer();
     for (Plane plane in image.planes) {
       allBytes.putUint8List(plane.bytes);

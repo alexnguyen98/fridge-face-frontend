@@ -10,13 +10,14 @@ class FaceDetectorView extends StatefulWidget {
 }
 
 class _FaceDetectorViewState extends State<FaceDetectorView> {
-  FaceDetector faceDetector =
-      GoogleMlKit.vision.faceDetector(FaceDetectorOptions(
-    enableContours: true,
-    enableClassification: true,
-  ));
+  FaceDetector faceDetector = GoogleMlKit.vision.faceDetector(
+      FaceDetectorOptions(
+          enableTracking: true, mode: FaceDetectorMode.accurate));
   bool isBusy = false;
   CustomPaint? customPaint;
+
+  static const double HEAD_THRESHOLD = 5;
+  static const double EYE_THRESHOLD = 0.5;
 
   @override
   void dispose() {
@@ -32,16 +33,17 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
       onImage: (inputImage) {
         processImage(inputImage);
       },
+      onClick: () {
+        print("hello");
+      },
       initialDirection: CameraLensDirection.front,
     );
   }
 
   Future<void> processImage(InputImage inputImage) async {
-    // decrease framerate here
     if (isBusy) return;
     isBusy = true;
     final faces = await faceDetector.processImage(inputImage);
-    print('Found ${faces.length} faces');
     if (inputImage.inputImageData?.size != null &&
         inputImage.inputImageData?.imageRotation != null) {
       final painter = FaceDetectorPainter(
@@ -55,6 +57,15 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
     isBusy = false;
     if (mounted) {
       setState(() {});
+      if (faces.length == 0) return;
+      if ((faces[0].headEulerAngleY! > HEAD_THRESHOLD) ||
+          (faces[0].headEulerAngleY! < -HEAD_THRESHOLD)) return;
+      if ((faces[0].headEulerAngleZ! > HEAD_THRESHOLD) ||
+          (faces[0].headEulerAngleZ! < -HEAD_THRESHOLD)) return;
+      if (faces[0].leftEyeOpenProbability! < EYE_THRESHOLD) return;
+      if (faces[0].rightEyeOpenProbability! < EYE_THRESHOLD) return;
+      print("passed");
+      isBusy = true;
     }
   }
 }
