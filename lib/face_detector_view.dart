@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:fridge_face_v1/facenet.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'camera_view.dart';
 import 'face_detector_painter.dart';
@@ -13,11 +14,19 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
   FaceDetector faceDetector = GoogleMlKit.vision.faceDetector(
       FaceDetectorOptions(
           enableTracking: true, mode: FaceDetectorMode.accurate));
+  FaceNet facenet = FaceNet();
   bool isBusy = false;
+  bool _isLoading = true;
   CustomPaint? customPaint;
 
   static const double HEAD_THRESHOLD = 5;
   static const double EYE_THRESHOLD = 0.5;
+
+  @override
+  void initState() {
+    super.initState();
+    _startUp();
+  }
 
   @override
   void dispose() {
@@ -27,21 +36,32 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
 
   @override
   Widget build(BuildContext context) {
-    return CameraView(
-      title: 'Face Detector',
-      customPaint: customPaint,
-      onImage: (inputImage) {
-        processImage(inputImage);
-      },
-      onClick: () {
-        print("hello");
-      },
-      initialDirection: CameraLensDirection.front,
-    );
+    return _isLoading
+        ? (Center(child: CircularProgressIndicator()))
+        : CameraView(
+            title: 'Face Detector',
+            customPaint: customPaint,
+            onImage: (inputImage, cameraImage) {
+              processImage(inputImage, cameraImage);
+            },
+            onClick: () {
+              print("hello");
+            },
+            initialDirection: CameraLensDirection.front,
+          );
   }
 
-  Future<void> processImage(InputImage inputImage) async {
+  Future<void> _startUp() async {
+    await facenet.loadModel();
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  Future<void> processImage(
+      InputImage inputImage, CameraImage cameraImage) async {
     if (isBusy) return;
+    print("face detecting...");
     isBusy = true;
     final faces = await faceDetector.processImage(inputImage);
     if (inputImage.inputImageData?.size != null &&
@@ -58,14 +78,19 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
     if (mounted) {
       setState(() {});
       if (faces.length == 0) return;
-      if ((faces[0].headEulerAngleY! > HEAD_THRESHOLD) ||
-          (faces[0].headEulerAngleY! < -HEAD_THRESHOLD)) return;
-      if ((faces[0].headEulerAngleZ! > HEAD_THRESHOLD) ||
-          (faces[0].headEulerAngleZ! < -HEAD_THRESHOLD)) return;
-      if (faces[0].leftEyeOpenProbability! < EYE_THRESHOLD) return;
-      if (faces[0].rightEyeOpenProbability! < EYE_THRESHOLD) return;
-      print("passed");
-      isBusy = true;
+      predictFace(cameraImage, faces[0]);
     }
+  }
+
+  void predictFace(CameraImage cameraImage, Face face) {
+    if ((face.headEulerAngleY! > HEAD_THRESHOLD) ||
+        (face.headEulerAngleY! < -HEAD_THRESHOLD)) return;
+    if ((face.headEulerAngleZ! > HEAD_THRESHOLD) ||
+        (face.headEulerAngleZ! < -HEAD_THRESHOLD)) return;
+    if (face.leftEyeOpenProbability! < EYE_THRESHOLD) return;
+    if (face.rightEyeOpenProbability! < EYE_THRESHOLD) return;
+    List res = facenet.setCurrentPrediction(cameraImage, face);
+    print("done!");
+    print(res);
   }
 }
