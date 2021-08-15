@@ -77,14 +77,19 @@ class _CameraViewState extends State<CameraView> {
         ),
         onPressed: _switchLiveCamera,
       ),
-      SizedBox(
-        width: 10,
-      ),
-      FloatingActionButton(
-        heroTag: "action",
-        onPressed: widget.onClick,
-        child: const Icon(Icons.portrait),
-      ),
+      if (widget.onClick != null)
+        Row(
+          children: [
+            SizedBox(
+              width: 10,
+            ),
+            FloatingActionButton(
+              heroTag: "action",
+              onPressed: widget.onClick,
+              child: const Icon(Icons.portrait),
+            ),
+          ],
+        )
     ]);
   }
 

@@ -137,6 +137,8 @@ PODS:
   - nanopb/encode (2.30908.0)
   - PromisesObjC (1.2.12)
   - Protobuf (3.17.0)
+  - shared_preferences (0.0.1):
+    - Flutter
   - SSZipArchive (2.4.2)
   - tflite_flutter (0.1.0):
     - Flutter
@@ -145,6 +147,7 @@ DEPENDENCIES:
   - camera (from `.symlinks/plugins/camera/ios`)
   - Flutter (from `Flutter`)
   - google_ml_kit (from `.symlinks/plugins/google_ml_kit/ios`)
+  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - tflite_flutter (from `.symlinks/plugins/tflite_flutter/ios`)
 
 SPEC REPOS:
@@ -184,6 +187,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   google_ml_kit:
     :path: ".symlinks/plugins/google_ml_kit/ios"
+  shared_preferences:
+    :path: ".symlinks/plugins/shared_preferences/ios"
   tflite_flutter:
     :path: ".symlinks/plugins/tflite_flutter/ios"
 
@@ -217,6 +222,7 @@ SPEC CHECKSUMS:
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   Protobuf: 7327d4444215b5f18e560a97f879ff5503c4581c
+  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   SSZipArchive: e7b4f3d9e780c2acc1764cd88fbf2de28f26e5b2
   tflite_flutter: 9157a660578930a99728974f247369af1c3595d5
 

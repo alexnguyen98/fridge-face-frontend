@@ -1,13 +1,25 @@
 import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 import 'package:camera/camera.dart';
+import 'package:fridge_face_v1/db.dart';
 import 'package:fridge_face_v1/image_converter.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:image/image.dart' as imglib;
 
 class FaceNet {
+  static final FaceNet _faceNet = FaceNet._internal();
+
+  FaceNet._internal();
+
+  factory FaceNet() {
+    return _faceNet;
+  }
+
+  Database db = Database();
   late Interpreter _interpreter;
+  static const double THRESHOLD = 1.0;
 
   Future<void> loadModel() async {
     Delegate delegate;
@@ -93,5 +105,29 @@ class FaceNet {
       }
     }
     return convertedBytes.buffer.asFloat32List();
+  }
+
+  Future<String> predictFace(List predictedData) async {
+    List? data = await db.getData();
+    double minDist = 999;
+    double curDist = 0.0;
+
+    if (data != null) {
+      curDist = _euclideanDistance(data, predictedData);
+      if (curDist <= THRESHOLD && curDist < minDist) {
+        minDist = curDist;
+        return "alex";
+      }
+    }
+
+    return "nic";
+  }
+
+  double _euclideanDistance(List e1, List e2) {
+    double sum = 0.0;
+    for (int i = 0; i < e1.length; i++) {
+      sum += pow((e1[i] - e2[i]), 2);
+    }
+    return sqrt(sum);
   }
 }

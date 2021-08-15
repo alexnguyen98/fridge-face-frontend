@@ -6,18 +6,19 @@ import 'package:google_ml_kit/google_ml_kit.dart';
 import 'camera_view.dart';
 import 'face_detector_painter.dart';
 
-class FaceDetectorView extends StatefulWidget {
+class TemporarySignupView extends StatefulWidget {
   @override
-  _FaceDetectorViewState createState() => _FaceDetectorViewState();
+  _TemporarySignupViewState createState() => _TemporarySignupViewState();
 }
 
-class _FaceDetectorViewState extends State<FaceDetectorView> {
+class _TemporarySignupViewState extends State<TemporarySignupView> {
   FaceDetector faceDetector = GoogleMlKit.vision.faceDetector(
       FaceDetectorOptions(
           enableTracking: true, mode: FaceDetectorMode.accurate));
   FaceNet facenet = FaceNet();
   Database db = Database();
   bool isBusy = false;
+  bool _isRegistering = false;
   CustomPaint? customPaint;
 
   static const double HEAD_THRESHOLD = 5;
@@ -32,10 +33,15 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
   @override
   Widget build(BuildContext context) {
     return CameraView(
-      title: 'Sign in',
+      title: 'Signup',
       customPaint: customPaint,
       onImage: (inputImage, cameraImage) {
         processImage(inputImage, cameraImage);
+      },
+      onClick: () {
+        setState(() {
+          _isRegistering = true;
+        });
       },
       initialDirection: CameraLensDirection.front,
     );
@@ -60,7 +66,7 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
     isBusy = false;
     if (mounted) {
       setState(() {});
-      if (faces.length == 0) return;
+      if (faces.length == 0 || !_isRegistering) return;
       predictFace(cameraImage, faces[0]);
     }
   }
@@ -72,13 +78,10 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
         (face.headEulerAngleZ! < -HEAD_THRESHOLD)) return;
     if (face.leftEyeOpenProbability! < EYE_THRESHOLD) return;
     if (face.rightEyeOpenProbability! < EYE_THRESHOLD) return;
-    isBusy = true;
     List res = facenet.setCurrentPrediction(cameraImage, face);
-    String? name = await facenet.predictFace(res);
     print(res);
-    if (name == "alex") {
-      print("signed in!");
-    }
-    isBusy = false;
+    await db.saveData(res);
+    print("registered!");
+    Navigator.of(context).pop();
   }
 }
