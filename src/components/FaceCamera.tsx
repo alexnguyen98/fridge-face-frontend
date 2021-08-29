@@ -1,66 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Camera, FaceDetectionResult, PermissionStatus } from 'expo-camera';
-import * as FaceDetector from 'expo-face-detector';
 import { Face } from 'expo-camera/build/Camera.types';
+import * as FaceDetector from 'expo-face-detector';
 
 const faceDetectorSettings = {
   mode: FaceDetector.Constants.Mode.accurate,
   detectLandmarks: FaceDetector.Constants.Landmarks.none,
   minDetectionInterval: 1000,
 };
-
-export default function App() {
-  const [hasPermission, setHasPermission] = useState(false);
-  const [type, setType] = useState(Camera.Constants.Type.back);
-  const [faceRes, setFaceRes] = useState<Face | null>(null);
-
-  useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
-      setHasPermission(status === PermissionStatus.GRANTED);
-    })();
-  }, []);
-
-  const handleFlip = () => setType(type === Camera.Constants.Type.back ? Camera.Constants.Type.front : Camera.Constants.Type.back);
-
-  const handleFacesDetected = (result: FaceDetectionResult) => {
-    const data = result.faces[0];
-    setFaceRes(data);
-  };
-
-  const boxStyle = () => ({
-    width: faceRes?.bounds.size.width,
-    height: faceRes?.bounds.size.height,
-    left: faceRes?.bounds.origin.x,
-    top: faceRes?.bounds.origin.y,
-    position: 'absolute',
-    borderColor: 'blue',
-    borderWidth: 5,
-  });
-
-  if (hasPermission === null) {
-    return <View />;
-  }
-
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
-  }
-
-  return (
-    <View style={styles.container}>
-      <Camera style={styles.camera} type={type} onFacesDetected={handleFacesDetected} faceDetectorSettings={faceDetectorSettings}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={handleFlip}>
-            <Text style={styles.text}> Flip </Text>
-          </TouchableOpacity>
-          {/* @ts-ignore */}
-          {faceRes && <View style={boxStyle()}></View>}
-        </View>
-      </Camera>
-    </View>
-  );
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -85,3 +33,56 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 });
+
+type Props = {
+  cameraDirection: 'front' | 'back';
+};
+
+export const FaceCamera: React.FC<Props> = ({ cameraDirection }) => {
+  const [hasPermission, setHasPermission] = useState(false);
+  const [faceRes, setFaceRes] = useState<Face | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestPermissionsAsync();
+      setHasPermission(status === PermissionStatus.GRANTED);
+    })();
+  }, []);
+
+  const handleFacesDetected = (result: FaceDetectionResult) => {
+    const data = result.faces[0];
+    setFaceRes(data);
+  };
+
+  const boxStyle = {
+    width: faceRes?.bounds.size.width,
+    height: faceRes?.bounds.size.height,
+    left: faceRes?.bounds.origin.x,
+    top: faceRes?.bounds.origin.y,
+    position: 'absolute',
+    borderColor: 'blue',
+    borderWidth: 5,
+  };
+
+  if (hasPermission === null) {
+    return <View />;
+  }
+
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
+
+  return (
+    <View style={styles.container}>
+      <Camera
+        style={styles.camera}
+        type={cameraDirection}
+        onFacesDetected={handleFacesDetected}
+        faceDetectorSettings={faceDetectorSettings}
+        autoFocus="on"
+      >
+        <View style={styles.buttonContainer}>{faceRes && <View style={boxStyle as any}></View>}</View>
+      </Camera>
+    </View>
+  );
+};
