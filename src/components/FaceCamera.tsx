@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Camera, FaceDetectionResult, PermissionStatus } from 'expo-camera';
 import { Face } from 'expo-camera/build/Camera.types';
 import * as FaceDetector from 'expo-face-detector';
 
 const faceDetectorSettings = {
-  mode: FaceDetector.Constants.Mode.accurate,
-  detectLandmarks: FaceDetector.Constants.Landmarks.none,
+  mode: FaceDetector.FaceDetectorMode.accurate,
+  detectLandmarks: FaceDetector.FaceDetectorLandmarks.none,
+  runClassifications: FaceDetector.FaceDetectorClassifications.none,
   minDetectionInterval: 1000,
 };
 
@@ -36,15 +37,17 @@ const styles = StyleSheet.create({
 
 type Props = {
   cameraDirection: 'front' | 'back';
+  onChange: (camera: Camera) => void;
 };
 
-export const FaceCamera: React.FC<Props> = ({ cameraDirection }) => {
+export const FaceCamera: React.FC<Props> = ({ cameraDirection, onChange }) => {
   const [hasPermission, setHasPermission] = useState(false);
   const [faceRes, setFaceRes] = useState<Face | null>(null);
+  const ref = useRef<Camera>(null);
 
   useEffect(() => {
     (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
+      const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === PermissionStatus.GRANTED);
     })();
   }, []);
@@ -52,6 +55,9 @@ export const FaceCamera: React.FC<Props> = ({ cameraDirection }) => {
   const handleFacesDetected = (result: FaceDetectionResult) => {
     const data = result.faces[0];
     setFaceRes(data);
+    if (data) {
+      onChange(ref.current as Camera);
+    }
   };
 
   const boxStyle = {
@@ -75,6 +81,7 @@ export const FaceCamera: React.FC<Props> = ({ cameraDirection }) => {
   return (
     <View style={styles.container}>
       <Camera
+        ref={ref}
         style={styles.camera}
         type={cameraDirection}
         onFacesDetected={handleFacesDetected}
