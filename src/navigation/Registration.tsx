@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import * as FileSystem from 'expo-file-system';
 import { Camera } from 'expo-camera';
 import { FaceCamera } from '../components/FaceCamera';
 import { SERVER_URL } from '../constants';
@@ -12,31 +13,14 @@ export const Registration = () => {
     setLoading(true);
 
     try {
-      const { uri } = await camera.takePictureAsync();
-
-      const uriArray = uri.split('.');
-      const fileType = uriArray[uriArray.length - 1];
-
-      const formData = new FormData();
-      formData.append('user', {
-        // @ts-ignore
-        uri: uri.replace('file://', ''),
-        name: `user.${fileType}`,
-        mimetype: `image/${fileType}`,
+      const { uri } = await camera.takePictureAsync({
+        quality: 0.5,
       });
-
-      console.log(formData.get('user'));
-
-      // @ts-ignore
-      for (var pair of formData.entries()) {
-        console.log(pair[0] + ', ' + pair[1]);
-        console.log(formData.get(pair[0]));
-      }
-
-      const res = await axios.post(SERVER_URL + '/user/register', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      const res = await FileSystem.uploadAsync(SERVER_URL + '/user/register', uri, {
+        uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+        fieldName: 'user',
       });
-      console.log(res.data);
+      console.log(res.body);
     } catch (err) {
       console.log(err);
     }
