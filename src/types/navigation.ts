@@ -5,14 +5,19 @@ export enum RootStackRoutes {
   Login = 'Login',
   Register = 'Register',
 }
-
-export type RootStackParamList = {
+export type RootStackParam = {
   [RootStackRoutes.Home]: undefined;
   [RootStackRoutes.Login]: undefined;
   [RootStackRoutes.Register]: undefined;
 };
 
-export type NavigationProps<RouteName extends keyof RootStackParamList = RootStackScreens> = NativeStackNavigationProp<
-  RootStackParamList,
-  RouteName
->;
+export enum RegisterStackRoutes {
+  RegisterCamera = 'RegisterCamera',
+  RegisterInfo = 'RegisterInfo',
+}
+export type RegisterStackParam = {
+  [RegisterStackRoutes.RegisterCamera]: undefined;
+  [RegisterStackRoutes.RegisterInfo]: undefined;
+};
+
+export type RootStackProps<T extends keyof RootStackParam> = NativeStackNavigationProp<RootStackParam, T>;

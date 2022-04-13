@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Button } from 'react-native';
-import { NavigationProps, RootStackRoutes } from '../types/navigation';
+import { RootStackProps, RootStackRoutes } from '../types/navigation';
 
 type Props = {
-  navigation: NavigationProps;
+  navigation: RootStackProps<RootStackRoutes.Home>;
 };
 
 export const Home: React.FC<Props> = ({ navigation }) => {

@@ -1,7 +1,7 @@
 import React from 'react';
-import { FaceCamera } from '../components/FaceCamera';
+import { FaceCamera } from '../../components/FaceCamera';
 
-export const Login = () => {
+export const LoginCamera = () => {
   const handleFaceDetect = () => {};
 
   return <FaceCamera cameraDirection="front" onChange={handleFaceDetect} />;

@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import * as FileSystem from 'expo-file-system';
 import { Camera } from 'expo-camera';
-import { FaceCamera } from '../components/FaceCamera';
-import { SERVER_URL } from '../constants';
+import { FaceCamera } from '../../components/FaceCamera';
+import { SERVER_URL } from '../../constants';
 
-export const Registration = () => {
+export const RegistrationCamera = () => {
   const [loading, setLoading] = useState(false);
 
   const handleFaceDetect = async (camera: Camera) => {
