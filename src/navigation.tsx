@@ -1,28 +1,55 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { RootStackParam, RootStackRoutes, RegisterStackParam, RegisterStackRoutes } from './types/navigation';
+import {
+  RootStackParam,
+  RootStackRoutes,
+  RegisterStackParam,
+  RegisterStackRoutes,
+  LoginStackParam,
+  LoginStackRoutes,
+  CartStackParam,
+  CartStackRoutes,
+} from './types/navigation';
 import { Home } from './screens/Home';
-import { LoginCamera } from './screens/Login/LoginCamera';
 import { RegistrationCamera } from './screens/Registration/RegistrationCamera';
 import { RegistrationInfo } from './screens/Registration/RegistrationInfo';
+import { Welcome } from './screens/Login/Welcome';
+import { LoginCamera } from './screens/Login/LoginCamera';
+import { CartCamera } from './screens/Cart/CartCamera';
 
 const RootNav = createNativeStackNavigator<RootStackParam>();
 const RegisterNav = createNativeStackNavigator<RegisterStackParam>();
+const LoginNav = createNativeStackNavigator<LoginStackParam>();
+const CartNav = createNativeStackNavigator<CartStackParam>();
+
+const CartStack = () => (
+  <CartNav.Navigator>
+    <CartNav.Screen name={CartStackRoutes.CartCamera} component={CartCamera} />
+  </CartNav.Navigator>
+);
 
 const RegisterStack = () => (
-  <RegisterNav.Navigator initialRouteName={RegisterStackRoutes.RegisterInfo} screenOptions={{ headerShown: false }}>
+  <RegisterNav.Navigator>
     <RegisterNav.Screen name={RegisterStackRoutes.RegisterInfo} component={RegistrationInfo} />
     <RegisterNav.Screen name={RegisterStackRoutes.RegisterCamera} component={RegistrationCamera} />
   </RegisterNav.Navigator>
 );
 
+const LoginStack = () => (
+  <LoginNav.Navigator>
+    <LoginNav.Screen name={LoginStackRoutes.LoginWelcome} component={Welcome} />
+    <LoginNav.Screen name={LoginStackRoutes.LoginCamera} component={LoginCamera} />
+  </LoginNav.Navigator>
+);
+
 export const RootStack = () => (
   <NavigationContainer>
-    <RootNav.Navigator initialRouteName={RootStackRoutes.Home}>
+    <RootNav.Navigator initialRouteName={RootStackRoutes.Home} screenOptions={{ headerShown: false }}>
       <RootNav.Screen name={RootStackRoutes.Home} component={Home} />
-      <RootNav.Screen name={RootStackRoutes.Login} component={LoginCamera} />
+      <RootNav.Screen name={RootStackRoutes.Login} component={LoginStack} />
       <RootNav.Screen name={RootStackRoutes.Register} component={RegisterStack} />
+      <RootNav.Screen name={RootStackRoutes.Cart} component={CartStack} />
     </RootNav.Navigator>
   </NavigationContainer>
 );

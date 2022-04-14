@@ -1,10 +1,8 @@
 import React from 'react';
 import { View, Button } from 'react-native';
-import { RootStackProps, RootStackRoutes } from '../types/navigation';
+import { RootStackNavigationProps, RootStackRoutes } from '../types/navigation';
 
-type Props = {
-  navigation: RootStackProps<RootStackRoutes.Home>;
-};
+type Props = RootStackNavigationProps<RootStackRoutes.Home>;
 
 export const Home: React.FC<Props> = ({ navigation }) => {
   const handleRedirect = (route: RootStackRoutes) => {

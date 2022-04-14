@@ -29,7 +29,7 @@ export const RegistrationInfoItems: React.FC<Props> = ({ items, active, onChange
       {items.map((i) => (
         <TouchableOpacity
           key={i}
-          style={{ ...styles.button, backgroundColor: active === i ? colors.gray[500] : colors.gray[300] }}
+          style={[styles.button, { backgroundColor: active === i ? colors.gray[500] : colors.gray[300] }]}
           onPress={() => onChange(i)}
         >
           <Text style={styles.buttonText}>{i}</Text>
