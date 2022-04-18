@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Camera, FaceDetectionResult, PermissionStatus } from 'expo-camera';
+import { Camera, FaceDetectionResult } from 'expo-camera';
 import { Face } from 'expo-camera/build/Camera.types';
 import * as FaceDetector from 'expo-face-detector';
+import { usePermission } from '../../hooks/usePermission';
 
 const faceDetectorSettings = {
   mode: FaceDetector.FaceDetectorMode.accurate,
@@ -12,9 +13,6 @@ const faceDetectorSettings = {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   camera: {
     flex: 1,
   },
@@ -37,25 +35,20 @@ const styles = StyleSheet.create({
 
 type Props = {
   cameraDirection: 'front' | 'back';
+  active: boolean;
   onChange: (camera: Camera) => void;
 };
 
-export const FaceCamera: React.FC<Props> = ({ cameraDirection, onChange }) => {
-  const [hasPermission, setHasPermission] = useState(false);
+export const FaceCamera: React.FC<Props> = ({ cameraDirection, active, onChange }) => {
   const [faceRes, setFaceRes] = useState<Face | null>(null);
   const ref = useRef<Camera>(null);
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === PermissionStatus.GRANTED);
-    })();
-  }, []);
+  const { hasPermission } = usePermission();
 
   const handleFacesDetected = (result: FaceDetectionResult) => {
     const data = result.faces[0];
     setFaceRes(data);
-    if (data) {
+    if (data && data.bounds.origin.x > 0 && data.bounds.origin.y > 0) {
       onChange(ref.current as Camera);
     }
   };
@@ -79,17 +72,15 @@ export const FaceCamera: React.FC<Props> = ({ cameraDirection, onChange }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <Camera
-        ref={ref}
-        style={styles.camera}
-        type={cameraDirection}
-        onFacesDetected={handleFacesDetected}
-        faceDetectorSettings={faceDetectorSettings}
-        autoFocus="on"
-      >
-        <View style={styles.buttonContainer}>{faceRes && <View style={boxStyle as any}></View>}</View>
-      </Camera>
-    </View>
+    <Camera
+      ref={ref}
+      type={cameraDirection}
+      onFacesDetected={active ? handleFacesDetected : undefined}
+      faceDetectorSettings={faceDetectorSettings}
+      style={styles.camera}
+      autoFocus="on"
+    >
+      <View style={styles.buttonContainer}>{faceRes && <View style={boxStyle as any}></View>}</View>
+    </Camera>
   );
 };

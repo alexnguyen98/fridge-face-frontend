@@ -30,8 +30,7 @@ type Props = RootStackNavigationProps<LoginStackRoutes.LoginWelcome>;
 export const Welcome: React.FC<Props> = ({ navigation }) => {
   useEffect(() => {
     setTimeout(() => {
-      navigation.goBack();
-      navigation.navigate(RootStackRoutes.Cart, {
+      navigation.replace(RootStackRoutes.Cart, {
         screen: CartStackRoutes.CartCamera,
       });
     }, 2000);

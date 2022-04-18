@@ -32,7 +32,7 @@ export const RegistrationInfo: React.FC<Props> = ({ navigation }) => {
 
   const filteredItems = () => items.filter((i) => i.includes(input?.toUpperCase()));
 
-  const headerHeight = useHeaderHeight();
+  const headerHeight = useHeaderHeight() + 20;
 
   const handleNext = () => {
     navigation.navigate(RegisterStackRoutes.RegisterCamera, {

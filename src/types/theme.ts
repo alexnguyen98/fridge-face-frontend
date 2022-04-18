@@ -5,22 +5,27 @@ export const colors = {
   },
   white: 'white',
   gray: {
+    200: '#e5e7eb',
     300: '#cbd5e1',
     500: '#64748b',
+    800: '#1f2937',
   },
 };
 
 export const borderRadius = {
   sm: 4,
+  md: 6,
+  lg: 8,
+  full: 20,
 };
 
 export const textSize = {
-  sm: 16,
-  md: 18,
-  xl: 20,
-  '2xl': 24,
-  '3xl': 28,
-  '4xl': 32,
+  sm: 14,
+  md: 16,
+  xl: 18,
+  '2xl': 22,
+  '3xl': 26,
+  '4xl': 30,
 };
 
 export const textWeight: any = {

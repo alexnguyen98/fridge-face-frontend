@@ -15,6 +15,7 @@ export type RootStackParam = {
   [RegisterStackRoutes.RegisterCamera]: {
     user: string;
   };
+  [LoginStackRoutes.LoginCamera]: undefined;
   [LoginStackRoutes.LoginWelcome]: undefined;
 };
 export type RootStackNavigationProps<T extends keyof RootStackParam> = {
@@ -52,12 +53,12 @@ export type LoginStackProps<T extends keyof LoginStackParam> = {
 
 export enum CartStackRoutes {
   CartCamera = 'CartCamera',
-  CartSummary = 'CartSummary',
+  CartCheckout = 'CartCheckout',
   CartProduct = 'CartProduct',
 }
 export type CartStackParam = {
   [CartStackRoutes.CartCamera]: undefined;
-  [CartStackRoutes.CartSummary]: undefined;
+  [CartStackRoutes.CartCheckout]: undefined;
   [CartStackRoutes.CartProduct]: undefined;
 };
 export type CartStackProps<T extends keyof CartStackParam> = {

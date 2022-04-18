@@ -4,9 +4,9 @@ import { borderRadius, colors, textSize, textWeight } from '../../types/theme';
 
 const styles = StyleSheet.create({
   button: {
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: borderRadius.sm,
+    width: '100%',
+    padding: 15,
+    borderRadius: borderRadius.md,
   },
   buttonText: {
     textAlign: 'center',
@@ -23,6 +23,7 @@ type Props = {
 
 export const Button: React.FC<Props> = ({ children, disabled, ...props }) => (
   <TouchableOpacity
+    activeOpacity={0.8}
     style={[styles.button, { backgroundColor: disabled ? colors.primary[400] : colors.primary[700] }]}
     disabled={disabled}
     {...props}

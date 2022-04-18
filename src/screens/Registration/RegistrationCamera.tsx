@@ -3,12 +3,12 @@ import { StyleSheet, View, Text } from 'react-native';
 import { StackActions } from '@react-navigation/native';
 import * as FileSystem from 'expo-file-system';
 import { Camera } from 'expo-camera';
-import { FaceCamera } from '../../components/FaceCamera';
+import { FaceCamera } from '../../components/utils/FaceCamera';
+import { HoleView } from '../../components/common/HoleView';
+import { Countdown } from '../../components/register/Countdown';
 import { SERVER_URL } from '../../constants';
 import { LoginStackRoutes, RegisterStackRoutes, RootStackNavigationProps, RootStackRoutes } from '../../types/navigation';
 import { colors, textSize, textWeight } from '../../types/theme';
-import { HoleView } from '../../components/common/HoleView';
-import { Countdown } from '../../components/register/Countdown';
 
 const styles = StyleSheet.create({
   container: {
@@ -40,12 +40,11 @@ export const RegistrationCamera: React.FC<Props> = ({ navigation, route }) => {
   const { user } = route.params;
 
   const handleFaceDetect = async (camera: Camera) => {
-    if (loading || !camera) return;
-    if (!countdown.started) setCountdown((state) => ({ ...state, started: true }));
+    if (!countdown.started) {
+      return setCountdown((state) => ({ ...state, started: true }));
+    }
     if (!countdown.finished) return;
     setLoading(true);
-    console.log(user);
-
     // try {
     //   const { uri } = await camera.takePictureAsync({
     //     quality: 0.5,
@@ -60,8 +59,7 @@ export const RegistrationCamera: React.FC<Props> = ({ navigation, route }) => {
     // }
 
     navigation.popToTop();
-    navigation.goBack();
-    navigation.navigate(RootStackRoutes.Login, {
+    navigation.replace(RootStackRoutes.Login, {
       screen: LoginStackRoutes.LoginWelcome,
     });
   };
@@ -70,7 +68,7 @@ export const RegistrationCamera: React.FC<Props> = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <FaceCamera cameraDirection="front" onChange={handleFaceDetect} />
+      <FaceCamera cameraDirection="front" active={!loading} onChange={handleFaceDetect} />
       <HoleView />
       <View style={styles.textContainer}>
         {loading ? (
