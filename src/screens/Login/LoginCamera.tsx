@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+import * as FileSystem from 'expo-file-system';
 import { Camera } from 'expo-camera';
+import { useUserContext } from '../../context/UserContext';
 import { FaceCamera } from '../../components/utils/FaceCamera';
 import { HoleView } from '../../components/common/HoleView';
+import { SERVER_URL } from '../../constants';
 import { colors, textSize, textWeight } from '../../types/theme';
 import { LoginStackRoutes, RegisterStackRoutes, RootStackNavigationProps, RootStackRoutes } from '../../types/navigation';
+import { useFailure } from '../../hooks/useFailure';
 
 const styles = StyleSheet.create({
   container: {
@@ -28,15 +32,39 @@ type Props = RootStackNavigationProps<LoginStackRoutes.LoginCamera>;
 
 export const LoginCamera: React.FC<Props> = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
+  const { setUser } = useUserContext();
+  const { failed, increaseFailure } = useFailure();
 
   const handleFaceDetect = async (camera: Camera) => {
-    if (loading || !camera) return;
+    console.log('centered and rotated');
+    if (loading || !camera || failed) return;
     setLoading(true);
+    try {
+      const { uri } = await camera.takePictureAsync({
+        quality: 0.5,
+      });
 
-    navigation.popToTop();
-    navigation.navigate(RootStackRoutes.Login, {
-      screen: LoginStackRoutes.LoginWelcome,
-    });
+      const res = await FileSystem.uploadAsync(SERVER_URL + '/user/login', uri, {
+        uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+        fieldName: 'user',
+      });
+      const data = JSON.parse(res.body);
+
+      if (data?.token) {
+        setUser({ token: data.token });
+
+        navigation.popToTop();
+        navigation.navigate(RootStackRoutes.Login, {
+          screen: LoginStackRoutes.LoginWelcome,
+        });
+      } else {
+        console.log('not recoginised');
+        increaseFailure();
+        setLoading(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

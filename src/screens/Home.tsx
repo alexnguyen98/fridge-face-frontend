@@ -13,7 +13,6 @@ export const Home: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 10 }}>
-      {/* <Button title="Login" onPress={() => handleRedirect(RootStackRoutes.Cart)} /> */}
       <Button onPress={() => handleRedirect(RootStackRoutes.Login)}>Login</Button>
       <Spacer />
       <Button onPress={() => handleRedirect(RootStackRoutes.Register)}>Register</Button>

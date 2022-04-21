@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { StackActions } from '@react-navigation/native';
 import * as FileSystem from 'expo-file-system';
 import { Camera } from 'expo-camera';
+import { useUserContext } from '../../context/UserContext';
 import { FaceCamera } from '../../components/utils/FaceCamera';
 import { HoleView } from '../../components/common/HoleView';
 import { Countdown } from '../../components/register/Countdown';
@@ -37,6 +37,8 @@ export const RegistrationCamera: React.FC<Props> = ({ navigation, route }) => {
     finished: false,
   });
 
+  const { setUser } = useUserContext();
+
   const { user } = route.params;
 
   const handleFaceDetect = async (camera: Camera) => {
@@ -45,23 +47,26 @@ export const RegistrationCamera: React.FC<Props> = ({ navigation, route }) => {
     }
     if (!countdown.finished) return;
     setLoading(true);
-    // try {
-    //   const { uri } = await camera.takePictureAsync({
-    //     quality: 0.5,
-    //   });
-    //   const res = await FileSystem.uploadAsync(SERVER_URL + '/user/register', uri, {
-    //     uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-    //     fieldName: 'user',
-    //   });
-    //   console.log(res.body);
-    // } catch (err) {
-    //   console.log(err);
-    // }
 
-    navigation.popToTop();
-    navigation.replace(RootStackRoutes.Login, {
-      screen: LoginStackRoutes.LoginWelcome,
-    });
+    try {
+      const { uri } = await camera.takePictureAsync({
+        quality: 0.5,
+      });
+      const res = await FileSystem.uploadAsync(SERVER_URL + '/user/register', uri, {
+        uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+        fieldName: 'file',
+        parameters: { user },
+      });
+      console.log(res.body);
+      // setUser({ token: res.body });
+
+      // navigation.popToTop();
+      // navigation.replace(RootStackRoutes.Login, {
+      //   screen: LoginStackRoutes.LoginWelcome,
+      // });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleCountdown = () => setCountdown((state) => ({ ...state, finished: true }));

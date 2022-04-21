@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
+import { useUserContext } from '../../context/UserContext';
 import { Spacer } from '../../components/common/Spacer';
 import { RootStackNavigationProps, RootStackRoutes, LoginStackRoutes, CartStackRoutes } from '../../types/navigation';
 import { colors, textSize, textWeight } from '../../types/theme';
+import { SERVER_URL } from '../../constants';
 
 const styles = StyleSheet.create({
   container: {
@@ -28,6 +30,9 @@ const styles = StyleSheet.create({
 type Props = RootStackNavigationProps<LoginStackRoutes.LoginWelcome>;
 
 export const Welcome: React.FC<Props> = ({ navigation }) => {
+  const { user } = useUserContext();
+  const user_id = user.token.replace('temporary_access_token=', '');
+
   useEffect(() => {
     setTimeout(() => {
       navigation.replace(RootStackRoutes.Cart, {
@@ -42,11 +47,11 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
         style={styles.image}
         resizeMode="cover"
         source={{
-          uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Official_portrait_of_Barack_Obama.jpg/1200px-Official_portrait_of_Barack_Obama.jpg',
+          uri: `${SERVER_URL}/uploads/${user_id.toLowerCase()}.jpg`,
         }}
       />
       <Spacer size={20} />
-      <Text style={styles.text}>Welcome Alex Nguyen</Text>
+      <Text style={styles.text}>Welcome {user_id}</Text>
     </View>
   );
 };

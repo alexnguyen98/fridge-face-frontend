@@ -48,7 +48,7 @@ export const FaceCamera: React.FC<Props> = ({ cameraDirection, active, onChange 
   const handleFacesDetected = (result: FaceDetectionResult) => {
     const data = result.faces[0];
     setFaceRes(data);
-    if (data && data.bounds.origin.x > 0 && data.bounds.origin.y > 0) {
+    if (data && data.bounds.origin.x > 0 && data.bounds.origin.y > 0 && -15 < data.yawAngle && data.yawAngle < 15) {
       onChange(ref.current as Camera);
     }
   };
@@ -77,8 +77,8 @@ export const FaceCamera: React.FC<Props> = ({ cameraDirection, active, onChange 
       type={cameraDirection}
       onFacesDetected={active ? handleFacesDetected : undefined}
       faceDetectorSettings={faceDetectorSettings}
+      autoFocus={Camera.Constants.AutoFocus.on}
       style={styles.camera}
-      autoFocus="on"
     >
       <View style={styles.buttonContainer}>{faceRes && <View style={boxStyle as any}></View>}</View>
     </Camera>
