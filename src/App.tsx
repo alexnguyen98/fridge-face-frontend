@@ -3,12 +3,15 @@ import { SafeAreaView } from 'react-native';
 import { registerRootComponent } from 'expo';
 import { RootStack } from './navigation';
 import { UserContext } from './context/UserContext';
+import { CartContext } from './context/CartContext';
 
 const App = () => (
   <UserContext>
-    <SafeAreaView style={{ flex: 1 }}>
-      <RootStack />
-    </SafeAreaView>
+    <CartContext>
+      <SafeAreaView style={{ flex: 1 }}>
+        <RootStack />
+      </SafeAreaView>
+    </CartContext>
   </UserContext>
 );
 

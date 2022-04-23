@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Dispatch } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
+import { Cart } from '../../context/CartContext';
 import { borderRadius, colors, textSize, textWeight } from '../../types/theme';
 import { Counter } from './Counter';
 
@@ -34,24 +35,31 @@ const styles = StyleSheet.create({
   },
 });
 
-type Props = {};
+type Props = {
+  data: any;
+  setCart: Dispatch<Cart>;
+};
 
-export const ProductPreview: React.FC<Props> = () => {
+export const ProductPreview: React.FC<Props> = ({ data, setCart }) => {
+  const handleAmount = (amount: number) => {
+    setCart((state: Cart) => ({
+      ...state,
+      [data.id]: {
+        ...state[data.id],
+        amount,
+      },
+    }));
+  };
+
   return (
     <View style={styles.container}>
-      <Image
-        style={styles.image}
-        resizeMode="cover"
-        source={{
-          uri: 'https://storage.googleapis.com/images-sof-prd-9fa6b8b.sof.prd.v8.commerce.mi9cloud.com/product-images/zoom/00059600060211.jpg',
-        }}
-      />
+      <Image style={styles.image} resizeMode="cover" source={{ uri: data.img }} />
       <View style={styles.left}>
         <View style={styles.flex}>
-          <Text style={styles.title}>Pomeranc</Text>
-          <Text style={styles.price}>$10</Text>
+          <Text style={styles.title}>{data.title}</Text>
+          <Text style={styles.price}>${data.price}</Text>
         </View>
-        <Counter />
+        <Counter amount={data.amount} max={data.max} handleAmount={handleAmount} />
       </View>
     </View>
   );

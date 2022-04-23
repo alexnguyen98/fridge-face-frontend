@@ -57,13 +57,12 @@ export const RegistrationCamera: React.FC<Props> = ({ navigation, route }) => {
         fieldName: 'file',
         parameters: { user },
       });
-      console.log(res.body);
-      // setUser({ token: res.body });
+      setUser({ token: res.body });
 
-      // navigation.popToTop();
-      // navigation.replace(RootStackRoutes.Login, {
-      //   screen: LoginStackRoutes.LoginWelcome,
-      // });
+      navigation.popToTop();
+      navigation.replace(RootStackRoutes.Login, {
+        screen: LoginStackRoutes.LoginWelcome,
+      });
     } catch (err) {
       console.log(err);
     }

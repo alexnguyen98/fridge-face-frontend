@@ -11,9 +11,10 @@ const styles = StyleSheet.create({
 
 type Props = {
   cameraDirection: 'front' | 'back';
+  onChange: (barcode: string) => void;
 };
 
-export const BarcodeCamera: React.FC<Props> = ({ cameraDirection }) => {
+export const BarcodeCamera: React.FC<Props> = ({ cameraDirection, onChange }) => {
   const [activeBarcode, setActiveBarcode] = useState('');
 
   const { hasPermission } = usePermission();
@@ -21,7 +22,7 @@ export const BarcodeCamera: React.FC<Props> = ({ cameraDirection }) => {
   const handleBarCodeScanned = (barcode: BarCodeScanningResult) => {
     if (barcode.data === activeBarcode) return;
     setActiveBarcode(barcode.data);
-    console.log(barcode.data);
+    onChange(barcode.data);
   };
 
   if (hasPermission === null) {

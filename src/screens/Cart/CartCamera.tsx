@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { Button } from '../../components/common/Button';
+import axios from 'axios';
+import { useCartContext, Cart } from '../../context/CartContext';
+import { SERVER_URL } from '../../constants';
 import { borderRadius, colors, textSize, textWeight } from '../../types/theme';
+import { Button } from '../../components/common/Button';
 import { CartStackProps, CartStackRoutes } from '../../types/navigation';
 import { BarcodeCamera } from '../../components/utils/BarcodeCamera';
 import { ProductPreview } from '../../components/cart/ProductPreview';
@@ -37,6 +40,18 @@ const styles = StyleSheet.create({
 type Props = CartStackProps<CartStackRoutes.CartCamera>;
 
 export const CartCamera: React.FC<Props> = ({ navigation }) => {
+  const [preview, setPreview] = useState(null);
+  const { cart, setCart } = useCartContext();
+
+  const activeAmount = preview && cart[preview].amount;
+
+  useEffect(() => {
+    if (activeAmount) {
+      const timer = setTimeout(() => setPreview(null), 10000);
+      return () => clearTimeout(timer);
+    }
+  }, [preview, activeAmount]);
+
   const handleLogout = () => {
     navigation.popToTop();
   };
@@ -49,17 +64,29 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
     navigation.navigate(CartStackRoutes.CartCheckout);
   };
 
+  const handleBarcode = async (barcode: string) => {
+    try {
+      const { data } = await axios.get(`${SERVER_URL}/product/${barcode}`);
+      setCart((state: Cart) => ({ ...state, [data.id]: { ...data, amount: 1 } }));
+      setPreview(data.id);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <BarcodeCamera cameraDirection="back" />
+      <BarcodeCamera cameraDirection="back" onChange={handleBarcode} />
       <View style={styles.wrapper}>
         <View style={styles.notice}>
           <Text style={styles.text}>Scan a product</Text>
         </View>
         <View style={styles.footer}>
-          <TouchableOpacity onPress={handleProductPreview} activeOpacity={0.8}>
-            <ProductPreview />
-          </TouchableOpacity>
+          {preview && cart[preview] && (
+            <TouchableOpacity onPress={handleProductPreview} activeOpacity={0.8}>
+              <ProductPreview data={cart[preview]} setCart={setCart} />
+            </TouchableOpacity>
+          )}
           <Button onPress={handleCheckout}>Cart</Button>
         </View>
       </View>

@@ -30,15 +30,14 @@ export const RegistrationInfo: React.FC<Props> = ({ navigation }) => {
   const [data, setData] = useState<string[]>([]);
 
   useEffect(() => {
-    const getData = async () => {
+    (async () => {
       try {
         const { data } = await axios.get(SERVER_URL + '/user/list');
         setData(data.users);
       } catch (err) {
         console.log(err);
       }
-    };
-    getData();
+    })();
   }, []);
 
   const headerHeight = useHeaderHeight() + 20;

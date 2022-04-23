@@ -1,6 +1,6 @@
 import React, { useState, createContext, useContext, Dispatch } from 'react';
 
-type User = {
+export type User = {
   token: string;
 };
 

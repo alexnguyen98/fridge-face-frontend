@@ -1,9 +1,21 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, { useState, createContext, useContext, Dispatch } from 'react';
 
-const Context = createContext({});
+export type Cart = {
+  [key: string]: any;
+};
+
+type cartContextType = {
+  cart: Cart;
+  setCart: Dispatch<Cart>;
+};
+
+const Context = createContext<cartContextType>({
+  cart: {},
+  setCart: () => null,
+});
 
 export const CartContext: React.FC = ({ children }) => {
-  const [cart, setCart] = useState({});
+  const [cart, setCart] = useState<Cart>({});
 
   return <Context.Provider value={{ cart, setCart }}>{children}</Context.Provider>;
 };

@@ -32,16 +32,28 @@ const styles = StyleSheet.create({
   },
 });
 
-type Props = {};
+type Props = {
+  amount: number;
+  max: number;
+  handleAmount: (amount: number) => void;
+};
 
-export const Counter: React.FC<Props> = () => {
+export const Counter: React.FC<Props> = ({ amount, max, handleAmount }) => {
+  const handleIncrease = () => {
+    if (amount !== max) handleAmount(amount + 1);
+  };
+
+  const handleDecrease = () => {
+    if (amount) handleAmount(amount - 1);
+  };
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity activeOpacity={0.8} style={styles.counter}>
+      <TouchableOpacity activeOpacity={0.8} style={styles.counter} onPress={handleDecrease}>
         <Text style={styles.counterText}>-</Text>
       </TouchableOpacity>
-      <Text style={styles.amount}>1</Text>
-      <TouchableOpacity activeOpacity={0.8} style={styles.counter}>
+      <Text style={styles.amount}>{amount}</Text>
+      <TouchableOpacity activeOpacity={0.8} style={styles.counter} onPress={handleIncrease}>
         <Text style={styles.counterText}>+</Text>
       </TouchableOpacity>
     </View>
