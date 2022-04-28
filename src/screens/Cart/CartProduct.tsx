@@ -1,5 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
+import { useCartContext } from '../../context/CartContext';
+import { CartStackProps, CartStackRoutes } from '../../types/navigation';
 import { borderRadius, colors, textSize, textWeight } from '../../types/theme';
 
 const styles = StyleSheet.create({
@@ -35,9 +37,14 @@ const styles = StyleSheet.create({
   },
 });
 
-type Props = {};
+type Props = CartStackProps<CartStackRoutes.CartProduct>;
 
-export const CartProduct: React.FC<Props> = () => {
+export const CartProduct: React.FC<Props> = ({ route }) => {
+  const { cart } = useCartContext();
+
+  const { preview } = route.params;
+  const data = cart[preview];
+
   return (
     <View style={styles.container}>
       <View style={styles.imageWrapper}>
@@ -45,13 +52,13 @@ export const CartProduct: React.FC<Props> = () => {
           style={styles.image}
           resizeMode="cover"
           source={{
-            uri: 'https://storage.googleapis.com/images-sof-prd-9fa6b8b.sof.prd.v8.commerce.mi9cloud.com/product-images/zoom/00059600060211.jpg',
+            uri: 'https://www.mixlabcocktails.com/images/cocktail-image/image-placeholder@3x.png',
           }}
         />
       </View>
-      <Text style={styles.title}>Pomeranc</Text>
-      <Text style={styles.price}>$10</Text>
-      <Text style={styles.description}>Pomeranc neni ovoce, change my mind</Text>
+      <Text style={styles.title}>{data.name}</Text>
+      <Text style={styles.price}>CZK {data.currentCost}</Text>
+      <Text style={styles.description}>{data.flavor}</Text>
     </View>
   );
 };

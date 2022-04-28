@@ -2,6 +2,10 @@ import React, { useState, createContext, useContext, Dispatch } from 'react';
 
 export type User = {
   token: string;
+  info: {
+    name: string;
+    nickname: string;
+  } | null;
 };
 
 type userContextType = {
@@ -11,6 +15,7 @@ type userContextType = {
 
 const initialState = {
   token: '',
+  info: null,
 };
 
 const Context = createContext<userContextType>({

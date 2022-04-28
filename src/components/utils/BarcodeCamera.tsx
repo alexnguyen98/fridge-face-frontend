@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Camera, BarCodeScanningResult } from 'expo-camera';
 import { usePermission } from '../../hooks/usePermission';
+import { BarCodeScanner } from 'expo-barcode-scanner';
+
+const barCodeScannerSettings = {
+  barCodeTypes: [BarCodeScanner.Constants.BarCodeType.ean13, BarCodeScanner.Constants.BarCodeType.qr],
+};
 
 const styles = StyleSheet.create({
   camera: {
@@ -32,5 +37,13 @@ export const BarcodeCamera: React.FC<Props> = ({ cameraDirection, onChange }) =>
     return <Text>No access to camera</Text>;
   }
 
-  return <Camera type={cameraDirection} onBarCodeScanned={handleBarCodeScanned} style={styles.camera} autoFocus="on" />;
+  return (
+    <Camera
+      type={cameraDirection}
+      onBarCodeScanned={handleBarCodeScanned}
+      style={styles.camera}
+      barCodeScannerSettings={barCodeScannerSettings}
+      autoFocus="on"
+    />
+  );
 };

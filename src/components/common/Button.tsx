@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
 
 type Props = {
   disabled?: boolean;
+  children: string;
   onPress?: (e: any) => void;
 };
 

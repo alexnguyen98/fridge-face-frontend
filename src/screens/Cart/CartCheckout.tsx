@@ -1,9 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useCartContext } from '../../context/CartContext';
+import { CartStackProps, CartStackRoutes } from '../../types/navigation';
+import { colors, textSize, textWeight } from '../../types/theme';
 import { ProductPreview } from '../../components/cart/ProductPreview';
 import { Button } from '../../components/common/Button';
-import { colors, textSize, textWeight } from '../../types/theme';
+import axios from 'axios';
+import { SERVER_URL } from '../../constants';
+import { useUserContext } from '../../context/UserContext';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,26 +29,85 @@ const styles = StyleSheet.create({
   },
 });
 
-export const CartCheckout = () => {
+type Props = CartStackProps<CartStackRoutes.CartCheckout>;
+
+export const CartCheckout: React.FC<Props> = ({ navigation }) => {
   const { cart, setCart } = useCartContext();
+  const { user, setUser } = useUserContext();
 
   const items = Object.values(cart);
 
-  const total = items?.reduce((prev, cur) => cur.price * cur.amount + prev, 0);
+  const total = items?.reduce((prev, cur) => cur.currentCost * cur.amount + prev, 0);
+
+  const handleProductPreview = (preview: string) => {
+    navigation.navigate(CartStackRoutes.CartProduct, {
+      preview,
+    });
+  };
+
+  const confirmPurchase = async () => {
+    let products: any = {};
+    Object.values(cart).forEach((i) => {
+      if (i.amount) {
+        products[i.id] = i.amount;
+      }
+    });
+
+    try {
+      await axios.post(
+        SERVER_URL + '/product/purchase',
+        {
+          products,
+        },
+        {
+          headers: {
+            token: user.token,
+          },
+        }
+      );
+
+      setCart({});
+      setUser({
+        token: '',
+        info: null,
+      });
+
+      navigation.popToTop();
+      navigation.goBack();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handlePurchase = () => {
+    Alert.alert(
+      'Are you sure buddy?',
+      '',
+      [
+        { text: 'Yes buddy', onPress: confirmPurchase },
+        { text: 'Nope', style: 'cancel' },
+      ],
+      { cancelable: false }
+    );
+  };
 
   return (
     <View style={styles.container}>
       <ScrollView>
-        {items?.map((i) => (
-          <ProductPreview key={i.id} data={i} setCart={setCart} />
-        ))}
+        {items
+          ?.filter((i) => i.amount)
+          .map((i) => (
+            <TouchableOpacity key={i.id} onPress={() => handleProductPreview(i.id)} activeOpacity={0.8}>
+              <ProductPreview data={i} setCart={setCart} />
+            </TouchableOpacity>
+          ))}
       </ScrollView>
       <View style={styles.footer}>
         <View style={styles.total}>
           <Text style={styles.totalText}>Total</Text>
-          <Text style={styles.totalText}>${total}</Text>
+          <Text style={styles.totalText}>CZK {total}</Text>
         </View>
-        <Button>Complete purchase</Button>
+        <Button onPress={handlePurchase}>Complete purchase</Button>
       </View>
     </View>
   );

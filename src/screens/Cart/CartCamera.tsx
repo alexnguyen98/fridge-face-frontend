@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import axios from 'axios';
+import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import { useCartContext, Cart } from '../../context/CartContext';
-import { SERVER_URL } from '../../constants';
 import { borderRadius, colors, textSize, textWeight } from '../../types/theme';
-import { Button } from '../../components/common/Button';
 import { CartStackProps, CartStackRoutes } from '../../types/navigation';
+import { useProducts } from '../../hooks/useProducts';
+import { Button } from '../../components/common/Button';
 import { BarcodeCamera } from '../../components/utils/BarcodeCamera';
 import { ProductPreview } from '../../components/cart/ProductPreview';
 
@@ -42,6 +41,7 @@ type Props = CartStackProps<CartStackRoutes.CartCamera>;
 export const CartCamera: React.FC<Props> = ({ navigation }) => {
   const [preview, setPreview] = useState(null);
   const { cart, setCart } = useCartContext();
+  const { searchProduct } = useProducts();
 
   const activeAmount = preview && cart[preview].amount;
 
@@ -57,7 +57,10 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
   };
 
   const handleProductPreview = () => {
-    navigation.navigate(CartStackRoutes.CartProduct);
+    if (!preview) return;
+    navigation.navigate(CartStackRoutes.CartProduct, {
+      preview,
+    });
   };
 
   const handleCheckout = () => {
@@ -65,12 +68,12 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
   };
 
   const handleBarcode = async (barcode: string) => {
-    try {
-      const { data } = await axios.get(`${SERVER_URL}/product/${barcode}`);
-      setCart((state: Cart) => ({ ...state, [data.id]: { ...data, amount: 1 } }));
-      setPreview(data.id);
-    } catch (err) {
-      console.log(err);
+    const product: any = searchProduct(barcode);
+    if (product) {
+      setCart((state: Cart) => ({ ...state, [product.id]: { ...product, amount: 1 } }));
+      setPreview(product.id);
+    } else {
+      Alert.alert('No product found');
     }
   };
 

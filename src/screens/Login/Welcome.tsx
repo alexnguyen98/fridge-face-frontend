@@ -31,7 +31,6 @@ type Props = RootStackNavigationProps<LoginStackRoutes.LoginWelcome>;
 
 export const Welcome: React.FC<Props> = ({ navigation }) => {
   const { user } = useUserContext();
-  const user_id = user.token.replace('temporary_access_token=', '');
 
   useEffect(() => {
     setTimeout(() => {
@@ -47,11 +46,11 @@ export const Welcome: React.FC<Props> = ({ navigation }) => {
         style={styles.image}
         resizeMode="cover"
         source={{
-          uri: `${SERVER_URL}/uploads/${user_id.toLowerCase()}.jpg`,
+          uri: `${SERVER_URL}/uploads/${user.info?.nickname}.jpg`,
         }}
       />
       <Spacer size={20} />
-      <Text style={styles.text}>Welcome {user_id}</Text>
+      <Text style={styles.text}>Welcome {user.info?.name}</Text>
     </View>
   );
 };

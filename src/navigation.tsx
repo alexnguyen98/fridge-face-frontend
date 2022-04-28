@@ -13,12 +13,13 @@ import {
 } from './types/navigation';
 import { Home } from './screens/Home';
 import { RegistrationCamera } from './screens/Registration/RegistrationCamera';
-import { RegistrationInfo } from './screens/Registration/RegistrationInfo';
+import { RegistrationInfo2 } from './screens/Registration/RegistrationInfo2';
 import { Welcome } from './screens/Login/Welcome';
 import { LoginCamera } from './screens/Login/LoginCamera';
 import { CartCamera } from './screens/Cart/CartCamera';
 import { CartProduct } from './screens/Cart/CartProduct';
 import { CartCheckout } from './screens/Cart/CartCheckout';
+import { Button, Alert } from 'react-native';
 
 const RootNav = createNativeStackNavigator<RootStackParam>();
 const RegisterNav = createNativeStackNavigator<RegisterStackParam>();
@@ -37,7 +38,23 @@ const CartStack = () => (
 
 const RegisterStack = () => (
   <RegisterNav.Navigator initialRouteName={RegisterStackRoutes.RegisterInfo}>
-    <RegisterNav.Screen name={RegisterStackRoutes.RegisterInfo} component={RegistrationInfo} />
+    <RegisterNav.Screen
+      name={RegisterStackRoutes.RegisterInfo}
+      component={RegistrationInfo2}
+      options={{
+        headerRight: () => (
+          <Button
+            onPress={() =>
+              Alert.alert(
+                'Help',
+                'Visit Fridge app site on corplifting (https://corp.applifting.cz/admin/mobiles) on your mobile phone and then show the QR code to the camera.'
+              )
+            }
+            title="Help"
+          />
+        ),
+      }}
+    />
     <RegisterNav.Screen name={RegisterStackRoutes.RegisterCamera} component={RegistrationCamera} />
   </RegisterNav.Navigator>
 );

@@ -21,8 +21,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: textSize.sm,
+    fontSize: textSize.md,
     color: colors.gray[800],
+    marginBottom: 3,
+  },
+  description: {
+    fontSize: textSize.sm,
+    color: colors.gray[500],
   },
   price: {
     marginLeft: 'auto',
@@ -53,13 +58,20 @@ export const ProductPreview: React.FC<Props> = ({ data, setCart }) => {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.image} resizeMode="cover" source={{ uri: data.img }} />
+      <Image
+        style={styles.image}
+        resizeMode="cover"
+        source={{ uri: 'https://www.mixlabcocktails.com/images/cocktail-image/image-placeholder@3x.png' }}
+      />
       <View style={styles.left}>
         <View style={styles.flex}>
-          <Text style={styles.title}>{data.title}</Text>
-          <Text style={styles.price}>${data.price}</Text>
+          <View>
+            <Text style={styles.title}>{data.name}</Text>
+            <Text style={styles.description}>{data.flavor}</Text>
+          </View>
+          <Text style={styles.price}>CZK {data.currentCost}</Text>
         </View>
-        <Counter amount={data.amount} max={data.max} handleAmount={handleAmount} />
+        <Counter amount={data.amount} max={data.count} handleAmount={handleAmount} />
       </View>
     </View>
   );

@@ -60,7 +60,7 @@ export const FaceCamera: React.FC<Props> = ({ cameraDirection, active, onChange 
     top: faceRes?.bounds.origin.y,
     position: 'absolute',
     borderColor: 'blue',
-    borderWidth: 5,
+    borderWidth: 1,
   };
 
   if (hasPermission === null) {

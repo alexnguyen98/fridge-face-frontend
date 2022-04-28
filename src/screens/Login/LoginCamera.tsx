@@ -51,7 +51,7 @@ export const LoginCamera: React.FC<Props> = ({ navigation }) => {
       const data = JSON.parse(res.body);
 
       if (data?.token) {
-        setUser({ token: data.token });
+        setUser(data as any);
 
         navigation.popToTop();
         navigation.navigate(RootStackRoutes.Login, {
