@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import * as FileSystem from 'expo-file-system';
+import * as Analytics from 'expo-firebase-analytics';
 import { Camera } from 'expo-camera';
+import { colors, textSize, textWeight } from '../../types/theme';
+import { LoginStackRoutes, RootStackNavigationProps, RootStackRoutes } from '../../types/navigation';
+import { SERVER_URL } from '../../constants';
+import { useFailure } from '../../hooks/useFailure';
 import { useUserContext } from '../../context/UserContext';
 import { FaceCamera } from '../../components/utils/FaceCamera';
 import { HoleView } from '../../components/common/HoleView';
-import { SERVER_URL } from '../../constants';
-import { colors, textSize, textWeight } from '../../types/theme';
-import { LoginStackRoutes, RegisterStackRoutes, RootStackNavigationProps, RootStackRoutes } from '../../types/navigation';
-import { useFailure } from '../../hooks/useFailure';
 
 const styles = StyleSheet.create({
   container: {
@@ -52,6 +53,10 @@ export const LoginCamera: React.FC<Props> = ({ navigation }) => {
 
       if (data?.token) {
         setUser(data as any);
+
+        Analytics.logEvent('login_success', {
+          attempts: failed,
+        });
 
         navigation.popToTop();
         navigation.navigate(RootStackRoutes.Login, {

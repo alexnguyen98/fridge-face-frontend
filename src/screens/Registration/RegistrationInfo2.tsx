@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+import * as Analytics from 'expo-firebase-analytics';
 import { borderRadius, colors, textSize, textWeight } from '../../types/theme';
 import { RegisterStackProps, RegisterStackRoutes } from '../../types/navigation';
 import { BarcodeCamera } from '../../components/utils/BarcodeCamera';
@@ -36,6 +37,10 @@ export const RegistrationInfo2: React.FC<Props> = ({ navigation }) => {
   const handleBarcode = async (qrcode: string) => {
     const split = qrcode.split(':');
     if (split[1]) {
+      Analytics.logEvent('screen_view', {
+        screen: RegisterStackRoutes.RegisterCamera,
+      });
+
       navigation.navigate(RegisterStackRoutes.RegisterCamera, {
         user: split[1],
       });

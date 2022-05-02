@@ -1,13 +1,14 @@
-import { useHeaderHeight } from '@react-navigation/elements';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Platform, KeyboardAvoidingView } from 'react-native';
+import { useHeaderHeight } from '@react-navigation/elements';
+// import * as Analytics from 'expo-firebase-analytics';
+import axios from 'axios';
+import { RegisterStackProps, RegisterStackRoutes } from '../../types/navigation';
+import { SERVER_URL } from '../../constants';
 import { Button } from '../../components/common/Button';
 import { Input } from '../../components/common/Input';
 import { Spacer } from '../../components/common/Spacer';
 import { RegistrationInfoItems } from '../../components/register/RegisterInfoItems';
-import { SERVER_URL } from '../../constants';
-import { RegisterStackProps, RegisterStackRoutes } from '../../types/navigation';
 
 const styles = StyleSheet.create({
   container: {

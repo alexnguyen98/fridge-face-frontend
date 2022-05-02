@@ -1,16 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
-import { useCartContext, Cart } from '../../context/CartContext';
+import * as Analytics from 'expo-firebase-analytics';
 import { borderRadius, colors, textSize, textWeight } from '../../types/theme';
 import { CartStackProps, CartStackRoutes } from '../../types/navigation';
+import { useCartContext, Cart } from '../../context/CartContext';
+import { useUserContext } from '../../context/UserContext';
 import { useProducts } from '../../hooks/useProducts';
 import { Button } from '../../components/common/Button';
 import { BarcodeCamera } from '../../components/utils/BarcodeCamera';
 import { ProductPreview } from '../../components/cart/ProductPreview';
+import { Logout } from '../../components/icons/Logout';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  iconWrapper: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    zIndex: 1,
+  },
+  icon: {
+    backgroundColor: colors.white,
+    borderRadius: borderRadius.full,
+    padding: 8,
   },
   wrapper: {
     position: 'absolute',
@@ -40,6 +54,7 @@ type Props = CartStackProps<CartStackRoutes.CartCamera>;
 
 export const CartCamera: React.FC<Props> = ({ navigation }) => {
   const [preview, setPreview] = useState(null);
+  const { setUser } = useUserContext();
   const { cart, setCart } = useCartContext();
   const { searchProduct } = useProducts();
 
@@ -53,25 +68,51 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
   }, [preview, activeAmount]);
 
   const handleLogout = () => {
+    setCart({});
+    setUser({
+      token: '',
+      info: null,
+    });
+
+    Analytics.logEvent('logout', {
+      screen: CartStackRoutes.CartCamera,
+    });
+
     navigation.popToTop();
   };
 
   const handleProductPreview = () => {
     if (!preview) return;
+
+    Analytics.logEvent('product_preview', {
+      screen: CartStackRoutes.CartCamera,
+      item: preview,
+    });
+
     navigation.navigate(CartStackRoutes.CartProduct, {
       preview,
     });
   };
 
   const handleCheckout = () => {
+    Analytics.logEvent('screen_view', {
+      screen: CartStackRoutes.CartCheckout,
+    });
+
     navigation.navigate(CartStackRoutes.CartCheckout);
   };
 
   const handleBarcode = async (barcode: string) => {
     const product: any = searchProduct(barcode);
+
     if (product) {
       setCart((state: Cart) => ({ ...state, [product.id]: { ...product, amount: 1 } }));
       setPreview(product.id);
+
+      Analytics.logEvent('add_cart', {
+        screen: CartStackRoutes.CartCamera,
+        product: product.id,
+      });
     } else {
       Alert.alert('No product found');
     }
@@ -80,6 +121,11 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <BarcodeCamera cameraDirection="back" onChange={handleBarcode} />
+      <View style={styles.iconWrapper}>
+        <TouchableOpacity style={styles.icon} onPress={handleLogout}>
+          <Logout fill="#64748b" />
+        </TouchableOpacity>
+      </View>
       <View style={styles.wrapper}>
         <View style={styles.notice}>
           <Text style={styles.text}>Scan a product</Text>
@@ -93,7 +139,6 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
           <Button onPress={handleCheckout}>Cart</Button>
         </View>
       </View>
-      {/* <Button onPress={handleLogout}>Logout</Button> */}
     </View>
   );
 };

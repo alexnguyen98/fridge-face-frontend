@@ -1,13 +1,18 @@
 import React from 'react';
 import { View } from 'react-native';
+import * as Analytics from 'expo-firebase-analytics';
+import { RootStackNavigationProps, RootStackRoutes } from '../types/navigation';
 import { Button } from '../components/common/Button';
 import { Spacer } from '../components/common/Spacer';
-import { RootStackNavigationProps, RootStackRoutes } from '../types/navigation';
 
 type Props = RootStackNavigationProps<RootStackRoutes.Home>;
 
 export const Home: React.FC<Props> = ({ navigation }) => {
   const handleRedirect = (route: RootStackRoutes) => {
+    Analytics.logEvent('screen_view', {
+      screen: route,
+    });
+
     navigation.navigate(route);
   };
 
