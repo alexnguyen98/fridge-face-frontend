@@ -19,12 +19,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     width: '100%',
-    height: '28%',
+    top: '85%',
     bottom: 0,
   },
   text: {
     fontWeight: textWeight.bold,
-    fontSize: textSize.xl,
+    fontSize: textSize['2xl'],
     color: colors.gray[500],
   },
 });
@@ -37,27 +37,23 @@ export const LoginCamera: React.FC<Props> = ({ navigation }) => {
   const { failed, increaseFailure } = useFailure();
 
   const handleFaceDetect = async (camera: Camera) => {
-    console.log('centered and rotated');
+    // console.log('centered and rotated');
     if (loading || !camera || failed) return;
     setLoading(true);
     try {
       const { uri } = await camera.takePictureAsync({
         quality: 0.5,
       });
-
       const res = await FileSystem.uploadAsync(SERVER_URL + '/user/login', uri, {
         uploadType: FileSystem.FileSystemUploadType.MULTIPART,
         fieldName: 'user',
       });
       const data = JSON.parse(res.body);
-
       if (data?.token) {
         setUser(data as any);
-
         Analytics.logEvent('login_success', {
           attempts: failed,
         });
-
         navigation.popToTop();
         navigation.navigate(RootStackRoutes.Login, {
           screen: LoginStackRoutes.LoginWelcome,
