@@ -1,8 +1,8 @@
 {
   "expo": {
     "entryPoint": "./src/App.tsx",
-    "name": "fridge-face-v1_frontend",
-    "slug": "fridge-face-v1_frontend",
+    "name": "fridge-face",
+    "slug": "fridge-face",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
