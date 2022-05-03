@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Camera, BarCodeScanningResult } from 'expo-camera';
 import { usePermission } from '../../hooks/usePermission';
@@ -29,6 +29,13 @@ export const BarcodeCamera: React.FC<Props> = ({ cameraDirection, onChange }) =>
     setActiveBarcode(barcode.data);
     onChange(barcode.data);
   };
+
+  useEffect(() => {
+    if (activeBarcode) {
+      const timer = setTimeout(() => setActiveBarcode(''), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [activeBarcode]);
 
   if (hasPermission === null) {
     return <View />;

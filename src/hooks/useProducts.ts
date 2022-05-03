@@ -23,7 +23,7 @@ export const useProducts = () => {
   }, []);
 
   const searchProduct = (barcode: string) => {
-    return products?.find((i: any) => i.barCode === barcode);
+    return products?.find((i: any) => i.barCode === barcode || i.barcodes?.includes(parseInt(barcode)));
   };
 
   return { products, searchProduct };
