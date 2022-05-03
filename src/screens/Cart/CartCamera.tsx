@@ -58,7 +58,7 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
   const { cart, setCart } = useCartContext();
   const { searchProduct } = useProducts();
 
-  const activeAmount = preview && cart[preview].amount;
+  const activeAmount = preview && cart?.[preview].amount;
 
   useEffect(() => {
     if (activeAmount) {
@@ -128,7 +128,7 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
       </View>
       <View style={styles.wrapper}>
         <View style={styles.notice}>
-          <Text style={styles.text}>Scan a product</Text>
+          <Text style={styles.text}>Scan a product from the back camera</Text>
         </View>
         <View style={styles.footer}>
           {preview && cart[preview] && (

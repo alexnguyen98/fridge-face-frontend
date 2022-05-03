@@ -43,29 +43,32 @@ export const RegistrationCamera: React.FC<Props> = ({ navigation, route }) => {
   const { user } = route.params;
 
   const handleFaceDetect = async (camera: Camera) => {
-    // if (!countdown.started) {
-    //   return setCountdown((state) => ({ ...state, started: true }));
-    // }
-    // if (!countdown.finished) return;
-    // setLoading(true);
-    // try {
-    //   const { uri } = await camera.takePictureAsync({
-    //     quality: 0.5,
-    //   });
-    //   const res = await FileSystem.uploadAsync(SERVER_URL + '/user/register', uri, {
-    //     uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-    //     fieldName: 'file',
-    //     parameters: { user },
-    //   });
-    //   setUser(res.body as any);
-    //   Analytics.logEvent('register_success');
-    //   navigation.popToTop();
-    //   navigation.replace(RootStackRoutes.Login, {
-    //     screen: LoginStackRoutes.LoginWelcome,
-    //   });
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    if (!countdown.started) {
+      return setCountdown((state) => ({ ...state, started: true }));
+    }
+    if (!countdown.finished) return;
+    setLoading(true);
+    try {
+      const { uri } = await camera.takePictureAsync({
+        quality: 0.5,
+      });
+      const res = await FileSystem.uploadAsync(SERVER_URL + '/user/register', uri, {
+        uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+        fieldName: 'file',
+        parameters: { user },
+      });
+
+      setUser(JSON.parse(res.body));
+
+      Analytics.logEvent('register_success');
+
+      navigation.popToTop();
+      navigation.replace(RootStackRoutes.Login, {
+        screen: LoginStackRoutes.LoginWelcome,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleCountdown = () => setCountdown((state) => ({ ...state, finished: true }));

@@ -48,18 +48,21 @@ export const LoginCamera: React.FC<Props> = ({ navigation }) => {
         uploadType: FileSystem.FileSystemUploadType.MULTIPART,
         fieldName: 'user',
       });
+
       const data = JSON.parse(res.body);
       if (data?.token) {
         setUser(data as any);
+
         Analytics.logEvent('login_success', {
           attempts: failed,
         });
+
         navigation.popToTop();
         navigation.navigate(RootStackRoutes.Login, {
           screen: LoginStackRoutes.LoginWelcome,
         });
       } else {
-        console.log('not recoginised');
+        console.log('not recognised');
         increaseFailure();
         setLoading(false);
       }

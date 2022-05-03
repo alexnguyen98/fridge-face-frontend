@@ -52,7 +52,7 @@ export const RegistrationInfo2: React.FC<Props> = ({ navigation }) => {
       <BarcodeCamera cameraDirection="front" onChange={handleBarcode} />
       <View style={styles.wrapper}>
         <View style={styles.notice}>
-          <Text style={styles.text}>Scan Fridge app QR code{'\n'} from corplifting</Text>
+          <Text style={styles.text}>Scan the QR code{'\n'} from corplifting in the section Fridge app</Text>
         </View>
       </View>
     </View>

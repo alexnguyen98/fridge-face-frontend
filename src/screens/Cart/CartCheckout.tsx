@@ -71,13 +71,6 @@ export const CartCheckout: React.FC<Props> = ({ navigation }) => {
           },
         }
       );
-
-      setCart({});
-      setUser({
-        token: '',
-        info: null,
-      });
-
       Analytics.logEvent('confirm_purchase', {
         products,
       });
