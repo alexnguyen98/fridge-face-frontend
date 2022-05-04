@@ -55,6 +55,7 @@ export enum CartStackRoutes {
   CartCamera = 'CartCamera',
   CartCheckout = 'CartCheckout',
   CartProduct = 'CartProduct',
+  CartSearch = 'CartSearch',
 }
 export type CartStackParam = {
   [CartStackRoutes.CartCamera]: undefined;
@@ -62,6 +63,7 @@ export type CartStackParam = {
   [CartStackRoutes.CartProduct]: {
     preview: string;
   };
+  [CartStackRoutes.CartSearch]: undefined;
 };
 export type CartStackProps<T extends keyof CartStackParam> = {
   navigation: NativeStackNavigationProp<CartStackParam, T>;

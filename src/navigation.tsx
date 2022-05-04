@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button, Alert } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import {
@@ -18,8 +19,8 @@ import { Welcome } from './screens/Login/Welcome';
 import { LoginCamera } from './screens/Login/LoginCamera';
 import { CartCamera } from './screens/Cart/CartCamera';
 import { CartProduct } from './screens/Cart/CartProduct';
+import { CartSearch } from './screens/Cart/CartSearch';
 import { CartCheckout } from './screens/Cart/CartCheckout';
-import { Button, Alert } from 'react-native';
 
 const RootNav = createNativeStackNavigator<RootStackParam>();
 const RegisterNav = createNativeStackNavigator<RegisterStackParam>();
@@ -32,6 +33,7 @@ const CartStack = () => (
     <CartNav.Screen name={CartStackRoutes.CartCheckout} component={CartCheckout} />
     <CartNav.Group screenOptions={{ presentation: 'modal' }}>
       <CartNav.Screen name={CartStackRoutes.CartProduct} component={CartProduct} />
+      <CartNav.Screen name={CartStackRoutes.CartSearch} component={CartSearch} />
     </CartNav.Group>
   </CartNav.Navigator>
 );

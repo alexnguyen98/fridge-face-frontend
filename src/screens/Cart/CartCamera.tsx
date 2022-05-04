@@ -10,6 +10,7 @@ import { Button } from '../../components/common/Button';
 import { BarcodeCamera } from '../../components/utils/BarcodeCamera';
 import { ProductPreview } from '../../components/cart/ProductPreview';
 import { Logout } from '../../components/icons/Logout';
+import { Search } from '../../components/icons/Search';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,6 +26,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: borderRadius.full,
     padding: 8,
+    marginBottom: 20,
   },
   wrapper: {
     position: 'absolute',
@@ -102,6 +104,14 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
     navigation.navigate(CartStackRoutes.CartCheckout);
   };
 
+  const handleSearch = () => {
+    Analytics.logEvent('screen_view', {
+      screen: CartStackRoutes.CartSearch,
+    });
+
+    navigation.navigate(CartStackRoutes.CartSearch);
+  };
+
   const handleBarcode = async (barcode: string) => {
     const product: any = searchProduct(barcode);
 
@@ -124,6 +134,9 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
       <View style={styles.iconWrapper}>
         <TouchableOpacity style={styles.icon} onPress={handleLogout}>
           <Logout fill="#64748b" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.icon} onPress={handleSearch}>
+          <Search fill="#64748b" />
         </TouchableOpacity>
       </View>
       <View style={styles.wrapper}>

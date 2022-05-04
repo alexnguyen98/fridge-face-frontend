@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import { useCartContext } from '../../context/CartContext';
 import { CartStackProps, CartStackRoutes } from '../../types/navigation';
 import { borderRadius, colors, textSize, textWeight } from '../../types/theme';
+import { useCartContext } from '../../context/CartContext';
 
 const styles = StyleSheet.create({
   container: {

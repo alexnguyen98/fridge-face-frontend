@@ -76,7 +76,11 @@ export const LoginCamera: React.FC<Props> = ({ navigation }) => {
       <FaceCamera cameraDirection="front" active={!loading} onChange={handleFaceDetect} />
       <HoleView />
       <View style={styles.textContainer}>
-        <Text style={styles.text}>{loading ? 'Processing...' : 'Searching for face...'}</Text>
+        {failed ? (
+          <Text style={styles.text}>Face not recognised, please try again</Text>
+        ) : (
+          <Text style={styles.text}>{loading ? 'Processing...' : 'Searching for face...'}</Text>
+        )}
       </View>
     </View>
   );
