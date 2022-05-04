@@ -1,7 +1,7 @@
-import React, { Dispatch } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import { Cart } from '../../context/CartContext';
 import { borderRadius, colors, textSize, textWeight } from '../../types/theme';
+import { Cart, useCartContext } from '../../context/CartContext';
 import { Counter } from './Counter';
 
 const styles = StyleSheet.create({
@@ -41,19 +41,18 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  data: any;
-  setCart: Dispatch<Cart>;
+  id: string;
 };
 
-export const ProductPreview: React.FC<Props> = ({ data, setCart }) => {
+export const ProductPreview: React.FC<Props> = ({ id }) => {
+  const { cart, setCart, products } = useCartContext();
+
+  const data = products[id];
+  const amount = cart[id] ?? 0;
+
   const handleAmount = (amount: number) => {
-    setCart((state: Cart) => ({
-      ...state,
-      [data.id]: {
-        ...state[data.id],
-        amount,
-      },
-    }));
+    // @ts-ignore
+    setCart((state: Cart) => ({ ...state, [id]: amount }));
   };
 
   return (
@@ -71,7 +70,7 @@ export const ProductPreview: React.FC<Props> = ({ data, setCart }) => {
           </View>
           <Text style={styles.price}>CZK {data.currentCost}</Text>
         </View>
-        <Counter amount={data.amount} max={data.count} handleAmount={handleAmount} />
+        <Counter amount={amount} max={data.count} handleAmount={handleAmount} />
       </View>
     </View>
   );

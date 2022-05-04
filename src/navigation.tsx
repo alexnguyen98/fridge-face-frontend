@@ -31,9 +31,9 @@ const CartStack = () => (
   <CartNav.Navigator initialRouteName={CartStackRoutes.CartCamera}>
     <CartNav.Screen name={CartStackRoutes.CartCamera} component={CartCamera} />
     <CartNav.Screen name={CartStackRoutes.CartCheckout} component={CartCheckout} />
+    <CartNav.Screen name={CartStackRoutes.CartSearch} component={CartSearch} />
     <CartNav.Group screenOptions={{ presentation: 'modal' }}>
       <CartNav.Screen name={CartStackRoutes.CartProduct} component={CartProduct} />
-      <CartNav.Screen name={CartStackRoutes.CartSearch} component={CartSearch} />
     </CartNav.Group>
   </CartNav.Navigator>
 );

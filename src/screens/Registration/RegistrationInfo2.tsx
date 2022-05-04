@@ -36,7 +36,7 @@ type Props = RegisterStackProps<RegisterStackRoutes.RegisterInfo>;
 export const RegistrationInfo2: React.FC<Props> = ({ navigation }) => {
   const handleBarcode = async (qrcode: string) => {
     const split = qrcode.split(':');
-    if (split[1]) {
+    if (split[1] && split[0].includes('@applifting.cz')) {
       Analytics.logEvent('screen_view', {
         screen: RegisterStackRoutes.RegisterCamera,
       });

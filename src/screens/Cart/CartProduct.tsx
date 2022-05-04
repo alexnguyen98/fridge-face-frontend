@@ -40,10 +40,10 @@ const styles = StyleSheet.create({
 type Props = CartStackProps<CartStackRoutes.CartProduct>;
 
 export const CartProduct: React.FC<Props> = ({ route }) => {
-  const { cart } = useCartContext();
+  const { products } = useCartContext();
 
-  const { preview } = route.params;
-  const data = cart[preview];
+  const { product } = route.params;
+  const data = products[product];
 
   return (
     <View style={styles.container}>

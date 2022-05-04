@@ -1,11 +1,12 @@
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { SERVER_URL } from '../constants';
+import { useCartContext } from '../context/CartContext';
 import { useUserContext } from '../context/UserContext';
 
 export const useProducts = () => {
   const { user } = useUserContext();
-  const [products, setProducts] = useState([]);
+  const { cart, setCart, products, setProducts } = useCartContext();
 
   useEffect(() => {
     (async () => {
@@ -15,7 +16,7 @@ export const useProducts = () => {
             token: user.token,
           },
         });
-        setProducts(data);
+        setProducts(data.reduce((obj: any, cur: any) => ({ ...obj, [cur.id]: cur }), {}));
       } catch (err) {
         console.log(err);
       }
@@ -23,8 +24,8 @@ export const useProducts = () => {
   }, []);
 
   const searchProduct = (barcode: string) => {
-    return products?.find((i: any) => i.barCode === barcode || i.barcodes?.includes(parseInt(barcode)));
+    return Object.values(products)?.find((i: any) => i.barCode === barcode || i.barcodes?.includes(parseInt(barcode)));
   };
 
-  return { products, searchProduct };
+  return { cart, setCart, searchProduct };
 };

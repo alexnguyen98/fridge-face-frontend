@@ -33,29 +33,28 @@ const styles = StyleSheet.create({
 type Props = CartStackProps<CartStackRoutes.CartCheckout>;
 
 export const CartCheckout: React.FC<Props> = ({ navigation }) => {
-  const { cart, setCart } = useCartContext();
-  const { user, setUser } = useUserContext();
+  const { cart, products } = useCartContext();
+  const { user } = useUserContext();
 
-  const items = Object.values(cart);
+  const items = Object.keys(cart);
+  const total = items?.reduce((prev, cur) => products[cur].currentCost * cart[cur] + prev, 0);
 
-  const total = items?.reduce((prev, cur) => cur.currentCost * cur.amount + prev, 0);
-
-  const handleProductPreview = (preview: string) => {
+  const handleProductPreview = (product: string) => {
     Analytics.logEvent('product_preview', {
       screen: CartStackRoutes.CartCheckout,
-      item: preview,
+      item: product,
     });
 
     navigation.navigate(CartStackRoutes.CartProduct, {
-      preview,
+      product,
     });
   };
 
   const confirmPurchase = async () => {
     let products: any = {};
-    Object.values(cart).forEach((i) => {
-      if (i.amount) {
-        products[i.id] = i.amount;
+    Object.keys(cart).forEach((i) => {
+      if (cart[i]) {
+        products[i] = cart[i];
       }
     });
 
@@ -98,10 +97,10 @@ export const CartCheckout: React.FC<Props> = ({ navigation }) => {
     <View style={styles.container}>
       <ScrollView>
         {items
-          ?.filter((i) => i.amount)
+          ?.filter((i) => cart[i])
           .map((i) => (
-            <TouchableOpacity key={i.id} onPress={() => handleProductPreview(i.id)} activeOpacity={0.8}>
-              <ProductPreview data={i} setCart={setCart} />
+            <TouchableOpacity key={i} onPress={() => handleProductPreview(i)} activeOpacity={0.8}>
+              <ProductPreview id={i} />
             </TouchableOpacity>
           ))}
       </ScrollView>

@@ -1,23 +1,32 @@
 import React, { useState, createContext, useContext, Dispatch } from 'react';
 
 export type Cart = {
-  [key: string]: any;
+  [id: string]: number;
+};
+
+export type Products = {
+  [id: string]: any;
 };
 
 type cartContextType = {
   cart: Cart;
   setCart: Dispatch<Cart>;
+  products: Products;
+  setProducts: Dispatch<Products>;
 };
 
 const Context = createContext<cartContextType>({
   cart: {},
   setCart: () => null,
+  products: [],
+  setProducts: () => null,
 });
 
 export const CartContext: React.FC = ({ children }) => {
   const [cart, setCart] = useState<Cart>({});
+  const [products, setProducts] = useState<Products>({});
 
-  return <Context.Provider value={{ cart, setCart }}>{children}</Context.Provider>;
+  return <Context.Provider value={{ cart, setCart, products, setProducts }}>{children}</Context.Provider>;
 };
 
 export const useCartContext = () => {

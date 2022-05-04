@@ -61,7 +61,7 @@ export type CartStackParam = {
   [CartStackRoutes.CartCamera]: undefined;
   [CartStackRoutes.CartCheckout]: undefined;
   [CartStackRoutes.CartProduct]: {
-    preview: string;
+    product: string;
   };
   [CartStackRoutes.CartSearch]: undefined;
 };

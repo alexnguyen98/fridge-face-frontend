@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 import { borderRadius, colors } from '../../types/theme';
 
 const styles = StyleSheet.create({
@@ -10,25 +11,31 @@ const styles = StyleSheet.create({
     borderColor: colors.gray[300],
     backgroundColor: colors.white,
   },
+  iconWrapper: {
+    flexDirection: 'row',
+  },
+  iconInput: {
+    flex: 1,
+    paddingLeft: 10,
+  },
 });
 
 type Props = {
   value?: string;
   placeholder?: string;
+  icon?: string;
   onChangeText?: (text: string) => void;
-  icon?: React.FC;
 };
 
 export const Input: React.FC<Props> = ({ icon, ...props }) => {
-  // if (icon) {
-  //   const Icon = icon;
+  if (icon) {
+    return (
+      <View style={[styles.iconWrapper, styles.input]}>
+        <AntDesign name={icon as any} size={22} color="#94a3b8" />
+        <TextInput style={styles.iconInput} {...props} />
+      </View>
+    );
+  }
 
-  //   return (
-  //     <View>
-  //       <Icon />
-  //       <TextInput style={styles.input} {...props} />;
-  //     </View>
-  //   );
-  // }
   return <TextInput style={styles.input} {...props} />;
 };

@@ -1,38 +1,46 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Platform, KeyboardAvoidingView } from 'react-native';
-import { useHeaderHeight } from '@react-navigation/elements';
-import { borderRadius, colors, textSize, textWeight } from '../../types/theme';
+import React, { useCallback, useState } from 'react';
+import { StyleSheet, View, FlatList, Text } from 'react-native';
 import { useCartContext } from '../../context/CartContext';
 import { Input } from '../../components/common/Input';
-import { Spacer } from '../../components/common/Spacer';
-import { Search } from '../../components/icons/Search';
+import { ProductPreview } from '../../components/cart/ProductPreview';
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
     flex: 1,
   },
   body: {
+    padding: 20,
+  },
+  list: {
     flex: 1,
   },
 });
 
+const ITEM_HEIGHT = 100;
+
 export const CartSearch = () => {
   const [input, setInput] = useState('');
-  const { cart } = useCartContext();
+  const { products } = useCartContext();
 
-  const headerHeight = useHeaderHeight() + 20;
+  const filtered = Object.values(products).filter((i) => i.name.toLowerCase().includes(input?.toLowerCase()));
+
+  const renderItem = useCallback(({ item }) => <ProductPreview id={item.id} />, []);
+  const keyExtractor = useCallback((item) => item.id, []);
+  const getItemLayout = useCallback(
+    (_, index) => ({
+      length: ITEM_HEIGHT,
+      offset: ITEM_HEIGHT * index,
+      index,
+    }),
+    []
+  );
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      keyboardVerticalOffset={headerHeight}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+    <View style={styles.container}>
       <View style={styles.body}>
-        <Input icon={Search} value={input} onChangeText={setInput} />
-        <Spacer />
+        <Input icon="search1" value={input} onChangeText={setInput} />
       </View>
-    </KeyboardAvoidingView>
+      <FlatList data={filtered} renderItem={renderItem} keyExtractor={keyExtractor} getItemLayout={getItemLayout} />
+    </View>
   );
 };

@@ -17,7 +17,7 @@ export const borderRadius = {
   sm: 4,
   md: 6,
   lg: 8,
-  full: 20,
+  full: 40,
 };
 
 export const textSize = {

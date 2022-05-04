@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import * as Analytics from 'expo-firebase-analytics';
+import { AntDesign } from '@expo/vector-icons';
 import { borderRadius, colors, textSize, textWeight } from '../../types/theme';
 import { CartStackProps, CartStackRoutes } from '../../types/navigation';
-import { useCartContext, Cart } from '../../context/CartContext';
+import { Cart } from '../../context/CartContext';
 import { useUserContext } from '../../context/UserContext';
 import { useProducts } from '../../hooks/useProducts';
 import { Button } from '../../components/common/Button';
 import { BarcodeCamera } from '../../components/utils/BarcodeCamera';
 import { ProductPreview } from '../../components/cart/ProductPreview';
-import { Logout } from '../../components/icons/Logout';
-import { Search } from '../../components/icons/Search';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,7 +24,7 @@ const styles = StyleSheet.create({
   icon: {
     backgroundColor: colors.white,
     borderRadius: borderRadius.full,
-    padding: 8,
+    padding: 10,
     marginBottom: 20,
   },
   wrapper: {
@@ -55,12 +54,11 @@ const styles = StyleSheet.create({
 type Props = CartStackProps<CartStackRoutes.CartCamera>;
 
 export const CartCamera: React.FC<Props> = ({ navigation }) => {
-  const [preview, setPreview] = useState(null);
+  const [preview, setPreview] = useState<string | null>(null);
   const { setUser } = useUserContext();
-  const { cart, setCart } = useCartContext();
-  const { searchProduct } = useProducts();
+  const { cart, setCart, searchProduct } = useProducts();
 
-  const activeAmount = preview && cart?.[preview].amount;
+  const activeAmount = preview && cart[preview];
 
   useEffect(() => {
     if (activeAmount) {
@@ -88,11 +86,11 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
 
     Analytics.logEvent('product_preview', {
       screen: CartStackRoutes.CartCamera,
-      item: preview,
+      product: preview,
     });
 
     navigation.navigate(CartStackRoutes.CartProduct, {
-      preview,
+      product: preview,
     });
   };
 
@@ -116,7 +114,8 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
     const product: any = searchProduct(barcode);
 
     if (product) {
-      setCart((state: Cart) => ({ ...state, [product.id]: { ...product, amount: 1 } }));
+      // @ts-ignore
+      setCart((state: Cart) => ({ ...state, [product.id]: 1 }));
       setPreview(product.id);
 
       Analytics.logEvent('add_cart', {
@@ -133,10 +132,10 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
       <BarcodeCamera cameraDirection="back" onChange={handleBarcode} />
       <View style={styles.iconWrapper}>
         <TouchableOpacity style={styles.icon} onPress={handleLogout}>
-          <Logout fill="#64748b" />
+          <AntDesign name="logout" size={30} color="#64748b" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.icon} onPress={handleSearch}>
-          <Search fill="#64748b" />
+          <AntDesign name="search1" size={30} color="#64748b" />
         </TouchableOpacity>
       </View>
       <View style={styles.wrapper}>
@@ -144,9 +143,9 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
           <Text style={styles.text}>Scan a product from the back camera</Text>
         </View>
         <View style={styles.footer}>
-          {preview && cart[preview] && (
+          {preview && (
             <TouchableOpacity onPress={handleProductPreview} activeOpacity={0.8}>
-              <ProductPreview data={cart[preview]} setCart={setCart} />
+              <ProductPreview id={preview} />
             </TouchableOpacity>
           )}
           <Button onPress={handleCheckout}>Cart</Button>
