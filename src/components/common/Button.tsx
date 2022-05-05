@@ -25,7 +25,7 @@ type Props = {
 export const Button: React.FC<Props> = ({ children, disabled, ...props }) => (
   <TouchableOpacity
     activeOpacity={0.8}
-    style={[styles.button, { backgroundColor: disabled ? colors.primary[400] : colors.primary[700] }]}
+    style={[styles.button, { backgroundColor: disabled ? colors.primary[300] : colors.primary[700] }]}
     disabled={disabled}
     {...props}
   >

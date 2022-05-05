@@ -25,10 +25,12 @@ export type RootStackNavigationProps<T extends keyof RootStackParam> = {
 
 export enum RegisterStackRoutes {
   RegisterInfo = 'RegisterInfo',
+  RegisterScan = 'RegisterScan',
   RegisterCamera = 'RegisterCamera',
 }
 export type RegisterStackParam = {
   [RegisterStackRoutes.RegisterInfo]: undefined;
+  [RegisterStackRoutes.RegisterScan]: undefined;
   [RegisterStackRoutes.RegisterCamera]: {
     user: string;
   };
