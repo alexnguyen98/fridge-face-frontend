@@ -33,13 +33,15 @@
     "web": {
       "favicon": "./src/assets/favicon.png",
       "config": {
-        "apiKey": "AIzaSyD3D9CdBFo_1G1F1WbdeJlaqfcYZYpgL08",
-        "authDomain": "fridge-face-backend.firebaseapp.com",
-        "projectId": "fridge-face-backend",
-        "storageBucket": "fridge-face-backend.appspot.com",
-        "messagingSenderId": "381141251763",
-        "appId": "1:381141251763:web:1e3478b624011a48b322c6",
-        "measurementId": "G-SLYTT6H9RR"
+        "firebase": {
+          "apiKey": "AIzaSyD3D9CdBFo_1G1F1WbdeJlaqfcYZYpgL08",
+          "authDomain": "fridge-face-backend.firebaseapp.com",
+          "projectId": "fridge-face-backend",
+          "storageBucket": "fridge-face-backend.appspot.com",
+          "messagingSenderId": "381141251763",
+          "appId": "1:381141251763:web:1e3478b624011a48b322c6",
+          "measurementId": "G-SLYTT6H9RR"
+        }
       }
     }
   }
