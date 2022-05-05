@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, Text, ScrollView, Image } from 'react-native';
-import * as Analytics from 'expo-firebase-analytics';
-import { borderRadius, colors, textSize, textWeight } from '../../types/theme';
+import { colors, textSize, textWeight } from '../../types/theme';
 import { RegisterStackProps, RegisterStackRoutes } from '../../types/navigation';
 import { Button } from '../../components/common/Button';
 import { Spacer } from '../../components/common/Spacer';
+import { useAnalytics } from '../../hooks/useAnalytics';
 
 const styles = StyleSheet.create({
   container: {
@@ -39,8 +39,10 @@ const styles = StyleSheet.create({
 type Props = RegisterStackProps<RegisterStackRoutes.RegisterInfo>;
 
 export const RegistrationInfo2: React.FC<Props> = ({ navigation }) => {
+  const { logEvent } = useAnalytics();
+
   const handleNext = () => {
-    Analytics.logEvent('screen_view', {
+    logEvent('screen_view', {
       screen: RegisterStackRoutes.RegisterCamera,
     });
 

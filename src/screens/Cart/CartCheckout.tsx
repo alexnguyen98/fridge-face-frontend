@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Alert } from 'react-native';
-import * as Analytics from 'expo-firebase-analytics';
 import axios from 'axios';
 import { CartStackProps, CartStackRoutes } from '../../types/navigation';
 import { colors, textSize, textWeight } from '../../types/theme';
@@ -9,6 +8,7 @@ import { useUserContext } from '../../context/UserContext';
 import { useCartContext } from '../../context/CartContext';
 import { ProductPreview } from '../../components/cart/ProductPreview';
 import { Button } from '../../components/common/Button';
+import { useAnalytics } from '../../hooks/useAnalytics';
 
 const styles = StyleSheet.create({
   container: {
@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
 type Props = CartStackProps<CartStackRoutes.CartCheckout>;
 
 export const CartCheckout: React.FC<Props> = ({ navigation }) => {
+  const { logEvent } = useAnalytics();
   const { cart, products } = useCartContext();
   const { user } = useUserContext();
 
@@ -40,7 +41,7 @@ export const CartCheckout: React.FC<Props> = ({ navigation }) => {
   const total = items?.reduce((prev, cur) => products[cur].currentCost * cart[cur] + prev, 0);
 
   const handleProductPreview = (product: string) => {
-    Analytics.logEvent('product_preview', {
+    logEvent('product_preview', {
       screen: CartStackRoutes.CartCheckout,
       item: product,
     });
@@ -70,7 +71,7 @@ export const CartCheckout: React.FC<Props> = ({ navigation }) => {
           },
         }
       );
-      Analytics.logEvent('confirm_purchase', {
+      logEvent('confirm_purchase', {
         products,
       });
 

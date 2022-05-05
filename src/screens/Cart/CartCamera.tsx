@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
-import * as Analytics from 'expo-firebase-analytics';
 import { AntDesign } from '@expo/vector-icons';
 import { borderRadius, colors, textSize, textWeight } from '../../types/theme';
 import { CartStackProps, CartStackRoutes } from '../../types/navigation';
@@ -10,6 +9,7 @@ import { useProducts } from '../../hooks/useProducts';
 import { Button } from '../../components/common/Button';
 import { BarcodeCamera } from '../../components/utils/BarcodeCamera';
 import { ProductPreview } from '../../components/cart/ProductPreview';
+import { useAnalytics } from '../../hooks/useAnalytics';
 
 const styles = StyleSheet.create({
   container: {
@@ -55,6 +55,8 @@ type Props = CartStackProps<CartStackRoutes.CartCamera>;
 
 export const CartCamera: React.FC<Props> = ({ navigation }) => {
   const [preview, setPreview] = useState<string | null>(null);
+
+  const { logEvent } = useAnalytics();
   const { setUser } = useUserContext();
   const { cart, setCart, searchProduct } = useProducts();
 
@@ -74,7 +76,7 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
       info: null,
     });
 
-    Analytics.logEvent('logout', {
+    logEvent('logout', {
       screen: CartStackRoutes.CartCamera,
     });
 
@@ -84,7 +86,7 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
   const handleProductPreview = () => {
     if (!preview) return;
 
-    Analytics.logEvent('product_preview', {
+    logEvent('product_preview', {
       screen: CartStackRoutes.CartCamera,
       product: preview,
     });
@@ -95,7 +97,7 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
   };
 
   const handleCheckout = () => {
-    Analytics.logEvent('screen_view', {
+    logEvent('screen_view', {
       screen: CartStackRoutes.CartCheckout,
     });
 
@@ -103,7 +105,7 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
   };
 
   const handleSearch = () => {
-    Analytics.logEvent('screen_view', {
+    logEvent('screen_view', {
       screen: CartStackRoutes.CartSearch,
     });
 
@@ -118,7 +120,7 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
       setCart((state: Cart) => ({ ...state, [product.id]: 1 }));
       setPreview(product.id);
 
-      Analytics.logEvent('add_cart', {
+      logEvent('add_cart', {
         screen: CartStackRoutes.CartCamera,
         product: product.id,
       });

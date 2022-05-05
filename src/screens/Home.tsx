@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import * as Analytics from 'expo-firebase-analytics';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { RootStackNavigationProps, RootStackRoutes } from '../types/navigation';
 import { Spacer } from '../components/common/Spacer';
 import { borderRadius, colors, textSize, textWeight } from '../types/theme';
+import { useAnalytics } from '../hooks/useAnalytics';
 
 const styles = StyleSheet.create({
   container: {
@@ -45,8 +45,10 @@ const styles = StyleSheet.create({
 type Props = RootStackNavigationProps<RootStackRoutes.Home>;
 
 export const Home: React.FC<Props> = ({ navigation }) => {
+  const { logEvent } = useAnalytics();
+
   const handleRedirect = (route: RootStackRoutes) => {
-    Analytics.logEvent('screen_view', {
+    logEvent('screen_view', {
       screen: route,
     });
 

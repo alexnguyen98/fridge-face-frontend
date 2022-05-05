@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import * as Analytics from 'expo-firebase-analytics';
 import { borderRadius, colors, textSize, textWeight } from '../../types/theme';
 import { RegisterStackProps, RegisterStackRoutes } from '../../types/navigation';
 import { BarcodeCamera } from '../../components/utils/BarcodeCamera';
+import { useAnalytics } from '../../hooks/useAnalytics';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,10 +34,12 @@ const styles = StyleSheet.create({
 type Props = RegisterStackProps<RegisterStackRoutes.RegisterScan>;
 
 export const RegistrationScan: React.FC<Props> = ({ navigation }) => {
+  const { logEvent } = useAnalytics();
+
   const handleBarcode = async (qrcode: string) => {
     const split = qrcode.split(':');
     if (split[1] && split[0].includes('@applifting.cz')) {
-      Analytics.logEvent('screen_view', {
+      logEvent('screen_view', {
         screen: RegisterStackRoutes.RegisterCamera,
       });
 

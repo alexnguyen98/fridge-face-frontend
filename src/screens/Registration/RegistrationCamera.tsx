@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import * as FileSystem from 'expo-file-system';
-import * as Analytics from 'expo-firebase-analytics';
 import { Camera } from 'expo-camera';
 import { colors, textSize, textWeight } from '../../types/theme';
 import { LoginStackRoutes, RegisterStackRoutes, RootStackNavigationProps, RootStackRoutes } from '../../types/navigation';
@@ -10,6 +9,7 @@ import { useUserContext } from '../../context/UserContext';
 import { FaceCamera } from '../../components/utils/FaceCamera';
 import { HoleView } from '../../components/common/HoleView';
 import { Countdown } from '../../components/register/Countdown';
+import { useAnalytics } from '../../hooks/useAnalytics';
 
 const styles = StyleSheet.create({
   container: {
@@ -38,6 +38,7 @@ export const RegistrationCamera: React.FC<Props> = ({ navigation, route }) => {
     finished: false,
   });
 
+  const { logEvent } = useAnalytics();
   const { setUser } = useUserContext();
 
   const { user } = route.params;
@@ -60,7 +61,7 @@ export const RegistrationCamera: React.FC<Props> = ({ navigation, route }) => {
 
       setUser(JSON.parse(res.body));
 
-      Analytics.logEvent('register_success');
+      logEvent('register_success');
 
       navigation.popToTop();
       navigation.replace(RootStackRoutes.Login, {
