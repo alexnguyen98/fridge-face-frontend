@@ -38,7 +38,7 @@ export const RegistrationScan: React.FC<Props> = ({ navigation }) => {
 
   const handleBarcode = async (qrcode: string) => {
     const split = qrcode.split(':');
-    if (split[1] && split[0].includes('@applifting.cz')) {
+    if (split[1] && (split[0].includes('applifting') || split[0].includes('dxheroes'))) {
       logEvent('screen_view', {
         screen: RegisterStackRoutes.RegisterCamera,
       });
