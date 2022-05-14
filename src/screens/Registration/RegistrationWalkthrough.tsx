@@ -1,10 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
 import { borderRadius, colors, textSize, textWeight } from '../../types/theme';
 import { RootStackNavigationProps, RootStackRoutes } from '../../types/navigation';
 import { useAnalytics } from '../../hooks/useAnalytics';
 import { Button } from '../../components/common/Button';
-import { Spacer } from '../../components/common/Spacer';
 import Swiper from 'react-native-swiper';
 
 const styles = StyleSheet.create({
@@ -16,19 +15,21 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     flex: 1,
     borderRadius: borderRadius.xl,
-    margin: 10,
+    margin: 5,
+    padding: 15,
+    paddingBottom: 40,
   },
   title: {
     fontWeight: textWeight.bold,
     textAlign: 'center',
     fontSize: textSize['4xl'],
-    lineHeight: 40,
-    marginVertical: 40,
+    lineHeight: 30,
+    marginVertical: 20,
   },
   body: {
     fontSize: textSize.md,
     textAlign: 'center',
-    lineHeight: 25,
+    lineHeight: 20,
     marginVertical: 5,
   },
   bold: {
@@ -71,14 +72,17 @@ export const RegistrationWalkthrough: React.FC<Props> = ({ navigation }) => {
     <View style={styles.container}>
       <Swiper loop={false} index={0} activeDotColor="#94a3b8" dot={<DotComponent />} activeDot={<DotComponent active />}>
         <View style={styles.wrapper}>
-          <Text style={styles.title}>Connecting your account{'\n'} to Fridge Face</Text>
-          <Text style={styles.body}>
-            Visit on your phone or laptop https://corp.applifting.cz/admin/mobiles {'\n'}or use the QR code bellow
-          </Text>
-          <View style={styles.qrcodeWrapper}>
-            <Image style={styles.qrcode} source={require('../../assets/corp-website.png')} />
-          </View>
-          <Text style={[styles.body, styles.bold]}>Ignore the Fridge app setup text on the site.</Text>
+          <ScrollView>
+            <Text style={styles.title}>Connecting your account{'\n'} to Fridge Face</Text>
+            <Text style={styles.body}>
+              Visit on your phone or laptop https://corp.applifting.cz/admin/mobiles {'\n'}or use the QR code bellow
+            </Text>
+            <View style={styles.qrcodeWrapper}>
+              <Image style={styles.qrcode} source={require('../../assets/corp-website.png')} />
+            </View>
+            <Text style={[styles.body, styles.bold]}>Ignore the Fridge app setup text on the site.</Text>
+            <ScrollView></ScrollView>
+          </ScrollView>
         </View>
         <View style={styles.wrapper}>
           <Text style={styles.title}>Using the user QR code</Text>

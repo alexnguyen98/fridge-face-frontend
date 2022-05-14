@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 5,
     letterSpacing: 8,
-    fontSize: textSize['2xl'],
+    fontSize: textSize['3xl'],
     fontWeight: textWeight.bold,
     color: colors.gray[400],
   },
@@ -28,16 +28,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     height: '30%',
-    padding: 30,
+    padding: 15,
   },
   button: {
     borderRadius: borderRadius.md,
     backgroundColor: colors.white,
-    padding: 30,
+    padding: 20,
     flex: 1,
   },
   text: {
-    fontSize: textSize['3xl'],
+    fontSize: textSize['2xl'],
     fontWeight: textWeight.bold,
   },
 });

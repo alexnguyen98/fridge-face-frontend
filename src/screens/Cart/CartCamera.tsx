@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   iconWrapper: {
     position: 'absolute',
-    top: 20,
+    top: 60,
     right: 20,
     zIndex: 1,
   },

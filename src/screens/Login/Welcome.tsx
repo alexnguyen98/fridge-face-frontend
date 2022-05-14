@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   text: {
-    fontSize: textSize['md'],
+    fontSize: textSize['2xl'],
     fontWeight: textWeight.medium,
     color: colors.gray[500],
   },

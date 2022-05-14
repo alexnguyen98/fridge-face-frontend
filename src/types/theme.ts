@@ -24,11 +24,11 @@ export const borderRadius = {
 
 export const textSize = {
   sm: 14,
-  md: 16,
+  md: 14,
   xl: 18,
   '2xl': 22,
   '3xl': 26,
-  '4xl': 30,
+  '4xl': 20,
 };
 
 export const textWeight: any = {

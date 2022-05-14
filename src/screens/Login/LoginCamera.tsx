@@ -11,6 +11,7 @@ import { useUserContext } from '../../context/UserContext';
 import { FaceCamera } from '../../components/utils/FaceCamera';
 import { HoleView } from '../../components/common/HoleView';
 import { Button } from '../../components/common/Button';
+import { Spacer } from '../../components/common/Spacer';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,14 +21,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     width: '100%',
-    top: '85%',
+    top: '83%',
     bottom: 0,
   },
   text: {
     fontWeight: textWeight.bold,
     fontSize: textSize['2xl'],
     color: colors.gray[500],
-    marginBottom: 10,
   },
   tryAgain: {
     alignItems: 'center',
@@ -88,6 +88,7 @@ export const LoginCamera: React.FC<Props> = ({ navigation }) => {
         {failed ? (
           <View style={styles.tryAgain}>
             <Text style={styles.text}>Face not recognised, please try again</Text>
+            <Spacer />
             <Button onPress={resetFailure}>Try again</Button>
           </View>
         ) : (
