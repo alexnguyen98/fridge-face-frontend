@@ -14,7 +14,7 @@ This project aims to improve the food and drink purchase experience in a company
   https://github.com/alexnguyen98/fridge-face-backend
 
 - **Production release on Expo Go app**: <br/>
-  ![Expo link](/images/expo-link.png)
+  ![Expo link](/images/expo-link.png | width=400)
 
 ## Features
 
