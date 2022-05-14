@@ -112,6 +112,14 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
     navigation.navigate(RootStackRoutes.CartSearch);
   };
 
+  const handleUserProfile = () => {
+    logEvent('screen_view', {
+      screen: RootStackRoutes.UserProfile,
+    });
+
+    navigation.navigate(RootStackRoutes.UserProfile);
+  };
+
   const handleBarcode = async (barcode: string) => {
     const product: any = searchProduct(barcode);
 
@@ -135,6 +143,9 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
       <View style={styles.iconWrapper}>
         <TouchableOpacity style={styles.icon} onPress={handleLogout}>
           <AntDesign name="logout" size={30} color="#64748b" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.icon} onPress={handleUserProfile}>
+          <AntDesign name="user" size={30} color="#64748b" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.icon} onPress={handleSearch}>
           <AntDesign name="search1" size={30} color="#64748b" />

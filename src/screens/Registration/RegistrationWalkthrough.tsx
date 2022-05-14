@@ -83,14 +83,14 @@ export const RegistrationWalkthrough: React.FC<Props> = ({ navigation }) => {
         <View style={styles.wrapper}>
           <Text style={styles.title}>Using the user QR code</Text>
           <Text style={styles.body}>
-            If you don't see a QR code on the site, click on "generate new QR code". {'\n'}After seeing it you can click on the Enroll face
+            If you don't see a QR code on the site, click on "generate new QR code". {'\n'}After seeing it you can click on the scan QR code
             button.
           </Text>
           <View style={styles.footer}>
             <Text style={styles.hint}>
               Fridge face and Fridge app are two different apps, we will just use the QR code to link your account
             </Text>
-            <Button onPress={handleNext}>Enroll Face</Button>
+            <Button onPress={handleNext}>Scan QR button</Button>
           </View>
         </View>
       </Swiper>

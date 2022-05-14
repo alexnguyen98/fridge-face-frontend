@@ -12,6 +12,7 @@ export enum RootStackRoutes {
   CartCheckout = 'CartCheckout',
   CartProduct = 'CartProduct',
   CartSearch = 'CartSearch',
+  UserProfile = 'UserProfile',
 }
 export type RootStackParam = {
   [RootStackRoutes.Home]: undefined;
@@ -28,6 +29,7 @@ export type RootStackParam = {
     product: string;
   };
   [RootStackRoutes.CartSearch]: undefined;
+  [RootStackRoutes.UserProfile]: undefined;
 };
 export type RootStackNavigationProps<T extends keyof RootStackParam> = {
   navigation: NativeStackNavigationProp<RootStackParam, T>;

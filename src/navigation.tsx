@@ -12,6 +12,7 @@ import { CartCamera } from './screens/Cart/CartCamera';
 import { CartProduct } from './screens/Cart/CartProduct';
 import { CartSearch } from './screens/Cart/CartSearch';
 import { CartCheckout } from './screens/Cart/CartCheckout';
+import { UserProfile } from './screens/User/UserProfile';
 
 const RootNav = createNativeStackNavigator<RootStackParam>();
 
@@ -33,6 +34,7 @@ export const RootStack = () => (
       <RootNav.Screen name={RootStackRoutes.CartSearch} component={CartSearch} options={sharedOptions} />
       <RootNav.Group screenOptions={{ presentation: 'modal' }}>
         <RootNav.Screen name={RootStackRoutes.CartProduct} component={CartProduct} />
+        <RootNav.Screen name={RootStackRoutes.UserProfile} component={UserProfile} />
       </RootNav.Group>
     </RootNav.Navigator>
   </NavigationContainer>

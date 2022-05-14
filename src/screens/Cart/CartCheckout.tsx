@@ -34,7 +34,7 @@ type Props = RootStackNavigationProps<RootStackRoutes.RegistrationWalkthrough>;
 
 export const CartCheckout: React.FC<Props> = ({ navigation }) => {
   const { logEvent } = useAnalytics();
-  const { cart, products } = useCartContext();
+  const { cart, setCart, products } = useCartContext();
   const { user } = useUserContext();
 
   const items = Object.keys(cart);
@@ -51,7 +51,7 @@ export const CartCheckout: React.FC<Props> = ({ navigation }) => {
     });
   };
 
-  const confirmPurchase = async () => {
+  const handlePurchase = async () => {
     let products: any = {};
     Object.keys(cart).forEach((i) => {
       if (cart[i]) {
@@ -71,26 +71,17 @@ export const CartCheckout: React.FC<Props> = ({ navigation }) => {
           },
         }
       );
+
       logEvent('confirm_purchase', {
         products,
       });
+      Alert.alert('Product purchased');
 
+      setCart({});
       navigation.popToTop();
     } catch (err) {
       console.log(err);
     }
-  };
-
-  const handlePurchase = () => {
-    Alert.alert(
-      'Are you sure buddy?',
-      '',
-      [
-        { text: 'Yes buddy', onPress: confirmPurchase },
-        { text: 'Nope', style: 'cancel' },
-      ],
-      { cancelable: false }
-    );
   };
 
   return (
