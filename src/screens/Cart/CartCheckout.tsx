@@ -1,14 +1,14 @@
 import React from 'react';
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios';
-import { CartStackProps, CartStackRoutes } from '../../types/navigation';
+import { RootStackNavigationProps, RootStackRoutes } from '../../types/navigation';
 import { colors, textSize, textWeight } from '../../types/theme';
 import { SERVER_URL } from '../../constants';
+import { useAnalytics } from '../../hooks/useAnalytics';
 import { useUserContext } from '../../context/UserContext';
 import { useCartContext } from '../../context/CartContext';
 import { ProductPreview } from '../../components/cart/ProductPreview';
 import { Button } from '../../components/common/Button';
-import { useAnalytics } from '../../hooks/useAnalytics';
 
 const styles = StyleSheet.create({
   container: {
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
 });
 
-type Props = CartStackProps<CartStackRoutes.CartCheckout>;
+type Props = RootStackNavigationProps<RootStackRoutes.RegistrationWalkthrough>;
 
 export const CartCheckout: React.FC<Props> = ({ navigation }) => {
   const { logEvent } = useAnalytics();
@@ -42,11 +42,11 @@ export const CartCheckout: React.FC<Props> = ({ navigation }) => {
 
   const handleProductPreview = (product: string) => {
     logEvent('product_preview', {
-      screen: CartStackRoutes.CartCheckout,
+      screen: RootStackRoutes.CartCheckout,
       item: product,
     });
 
-    navigation.navigate(CartStackRoutes.CartProduct, {
+    navigation.navigate(RootStackRoutes.CartProduct, {
       product,
     });
   };
@@ -76,7 +76,6 @@ export const CartCheckout: React.FC<Props> = ({ navigation }) => {
       });
 
       navigation.popToTop();
-      navigation.goBack();
     } catch (err) {
       console.log(err);
     }

@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { StyleSheet, View, FlatList, Text } from 'react-native';
+import { StyleSheet, View, FlatList } from 'react-native';
 import { useCartContext } from '../../context/CartContext';
 import { Input } from '../../components/common/Input';
 import { ProductPreview } from '../../components/cart/ProductPreview';

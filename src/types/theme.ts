@@ -18,6 +18,7 @@ export const borderRadius = {
   sm: 4,
   md: 6,
   lg: 8,
+  xl: 16,
   full: 40,
 };
 

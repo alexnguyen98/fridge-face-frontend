@@ -3,13 +3,13 @@ import { StyleSheet, View, Text } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { Camera } from 'expo-camera';
 import { colors, textSize, textWeight } from '../../types/theme';
-import { LoginStackRoutes, RegisterStackRoutes, RootStackNavigationProps, RootStackRoutes } from '../../types/navigation';
+import { RootStackNavigationProps, RootStackRoutes } from '../../types/navigation';
 import { SERVER_URL } from '../../constants';
+import { useAnalytics } from '../../hooks/useAnalytics';
 import { useUserContext } from '../../context/UserContext';
 import { FaceCamera } from '../../components/utils/FaceCamera';
 import { HoleView } from '../../components/common/HoleView';
 import { Countdown } from '../../components/register/Countdown';
-import { useAnalytics } from '../../hooks/useAnalytics';
 
 const styles = StyleSheet.create({
   container: {
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   },
 });
 
-type Props = RootStackNavigationProps<RegisterStackRoutes.RegisterCamera>;
+type Props = RootStackNavigationProps<RootStackRoutes.RegisterCamera>;
 
 export const RegistrationCamera: React.FC<Props> = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
@@ -63,10 +63,7 @@ export const RegistrationCamera: React.FC<Props> = ({ navigation, route }) => {
 
       logEvent('register_success');
 
-      navigation.popToTop();
-      navigation.replace(RootStackRoutes.Login, {
-        screen: LoginStackRoutes.LoginWelcome,
-      });
+      navigation.navigate(RootStackRoutes.LoginWelcome);
     } catch (err) {
       console.log(err);
     }

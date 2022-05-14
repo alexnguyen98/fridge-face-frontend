@@ -1,19 +1,10 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
-import {
-  RootStackParam,
-  RootStackRoutes,
-  RegisterStackParam,
-  RegisterStackRoutes,
-  LoginStackParam,
-  LoginStackRoutes,
-  CartStackParam,
-  CartStackRoutes,
-} from './types/navigation';
+import { RootStackParam, RootStackRoutes } from './types/navigation';
 import { Home } from './screens/Home';
 import { RegistrationCamera } from './screens/Registration/RegistrationCamera';
-import { RegistrationInfo2 } from './screens/Registration/RegistrationInfo2';
+import { RegistrationWalkthrough } from './screens/Registration/RegistrationWalkthrough';
 import { RegistrationScan } from './screens/Registration/RegistrationScan';
 import { Welcome } from './screens/Login/Welcome';
 import { LoginCamera } from './screens/Login/LoginCamera';
@@ -23,43 +14,26 @@ import { CartSearch } from './screens/Cart/CartSearch';
 import { CartCheckout } from './screens/Cart/CartCheckout';
 
 const RootNav = createNativeStackNavigator<RootStackParam>();
-const RegisterNav = createNativeStackNavigator<RegisterStackParam>();
-const LoginNav = createNativeStackNavigator<LoginStackParam>();
-const CartNav = createNativeStackNavigator<CartStackParam>();
 
-const CartStack = () => (
-  <CartNav.Navigator initialRouteName={CartStackRoutes.CartCamera}>
-    <CartNav.Screen name={CartStackRoutes.CartCamera} component={CartCamera} />
-    <CartNav.Screen name={CartStackRoutes.CartCheckout} component={CartCheckout} />
-    <CartNav.Screen name={CartStackRoutes.CartSearch} component={CartSearch} />
-    <CartNav.Group screenOptions={{ presentation: 'modal' }}>
-      <CartNav.Screen name={CartStackRoutes.CartProduct} component={CartProduct} />
-    </CartNav.Group>
-  </CartNav.Navigator>
-);
-
-const RegisterStack = () => (
-  <RegisterNav.Navigator initialRouteName={RegisterStackRoutes.RegisterInfo}>
-    <RegisterNav.Screen name={RegisterStackRoutes.RegisterInfo} component={RegistrationInfo2} />
-    <RegisterNav.Screen name={RegisterStackRoutes.RegisterScan} component={RegistrationScan} />
-    <RegisterNav.Screen name={RegisterStackRoutes.RegisterCamera} component={RegistrationCamera} />
-  </RegisterNav.Navigator>
-);
-
-const LoginStack = () => (
-  <LoginNav.Navigator initialRouteName={LoginStackRoutes.LoginCamera}>
-    <LoginNav.Screen name={LoginStackRoutes.LoginWelcome} component={Welcome} />
-    <LoginNav.Screen name={LoginStackRoutes.LoginCamera} component={LoginCamera} />
-  </LoginNav.Navigator>
-);
+const sharedOptions = {
+  headerBackTitle: 'Back',
+};
 
 export const RootStack = () => (
   <NavigationContainer>
-    <RootNav.Navigator initialRouteName={RootStackRoutes.Home} screenOptions={{ headerShown: false }}>
+    <RootNav.Navigator initialRouteName={RootStackRoutes.Home}>
       <RootNav.Screen name={RootStackRoutes.Home} component={Home} />
-      <RootNav.Screen name={RootStackRoutes.Login} component={LoginStack} />
-      <RootNav.Screen name={RootStackRoutes.Register} component={RegisterStack} />
-      <RootNav.Screen name={RootStackRoutes.Cart} component={CartStack} />
+      <RootNav.Screen name={RootStackRoutes.RegistrationWalkthrough} component={RegistrationWalkthrough} options={sharedOptions} />
+      <RootNav.Screen name={RootStackRoutes.RegisterScan} component={RegistrationScan} options={sharedOptions} />
+      <RootNav.Screen name={RootStackRoutes.RegisterCamera} component={RegistrationCamera} options={sharedOptions} />
+      <RootNav.Screen name={RootStackRoutes.LoginWelcome} component={Welcome} options={{ headerShown: false }} />
+      <RootNav.Screen name={RootStackRoutes.LoginCamera} component={LoginCamera} options={sharedOptions} />
+      <RootNav.Screen name={RootStackRoutes.CartCamera} component={CartCamera} options={sharedOptions} />
+      <RootNav.Screen name={RootStackRoutes.CartCheckout} component={CartCheckout} options={sharedOptions} />
+      <RootNav.Screen name={RootStackRoutes.CartSearch} component={CartSearch} options={sharedOptions} />
+      <RootNav.Group screenOptions={{ presentation: 'modal' }}>
+        <RootNav.Screen name={RootStackRoutes.CartProduct} component={CartProduct} />
+      </RootNav.Group>
     </RootNav.Navigator>
   </NavigationContainer>
 );

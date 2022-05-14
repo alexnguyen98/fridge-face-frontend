@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import { CartStackProps, CartStackRoutes } from '../../types/navigation';
 import { borderRadius, colors, textSize, textWeight } from '../../types/theme';
+import { RootStackNavigationProps, RootStackRoutes } from '../../types/navigation';
 import { useCartContext } from '../../context/CartContext';
 
 const styles = StyleSheet.create({
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   },
 });
 
-type Props = CartStackProps<CartStackRoutes.CartProduct>;
+type Props = RootStackNavigationProps<RootStackRoutes.CartProduct>;
 
 export const CartProduct: React.FC<Props> = ({ route }) => {
   const { products } = useCartContext();

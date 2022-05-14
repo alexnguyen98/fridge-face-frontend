@@ -7,5 +7,7 @@ export const useFailure = () => {
 
   const increaseFailure = () => setCount((state) => state - 1);
 
-  return { failed: !count, increaseFailure };
+  const resetFailure = () => setCount(MAX_FAILURE);
+
+  return { failed: !count, increaseFailure, resetFailure };
 };

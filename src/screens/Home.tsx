@@ -2,9 +2,9 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { RootStackNavigationProps, RootStackRoutes } from '../types/navigation';
-import { Spacer } from '../components/common/Spacer';
 import { borderRadius, colors, textSize, textWeight } from '../types/theme';
 import { useAnalytics } from '../hooks/useAnalytics';
+import { Spacer } from '../components/common/Spacer';
 
 const styles = StyleSheet.create({
   container: {
@@ -62,9 +62,9 @@ export const Home: React.FC<Props> = ({ navigation }) => {
         <Text style={styles.title}>FRIDGE FACE</Text>
       </View>
       <View style={styles.main}>
-        <Item title="Login" onChange={() => handleRedirect(RootStackRoutes.Login)} />
+        <Item title="Login" onChange={() => handleRedirect(RootStackRoutes.LoginCamera)} />
         <Spacer horizontal />
-        <Item title="Register" onChange={() => handleRedirect(RootStackRoutes.Register)} />
+        <Item title="Register" onChange={() => handleRedirect(RootStackRoutes.RegistrationWalkthrough)} />
       </View>
     </View>
   );

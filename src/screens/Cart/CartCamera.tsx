@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { borderRadius, colors, textSize, textWeight } from '../../types/theme';
-import { CartStackProps, CartStackRoutes } from '../../types/navigation';
+import { RootStackNavigationProps, RootStackRoutes } from '../../types/navigation';
 import { Cart } from '../../context/CartContext';
 import { useUserContext } from '../../context/UserContext';
 import { useProducts } from '../../hooks/useProducts';
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
 });
 
-type Props = CartStackProps<CartStackRoutes.CartCamera>;
+type Props = RootStackNavigationProps<RootStackRoutes.RegistrationWalkthrough>;
 
 export const CartCamera: React.FC<Props> = ({ navigation }) => {
   const [preview, setPreview] = useState<string | null>(null);
@@ -77,7 +77,7 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
     });
 
     logEvent('logout', {
-      screen: CartStackRoutes.CartCamera,
+      screen: RootStackRoutes.CartCamera,
     });
 
     navigation.popToTop();
@@ -87,29 +87,29 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
     if (!preview) return;
 
     logEvent('product_preview', {
-      screen: CartStackRoutes.CartCamera,
+      screen: RootStackRoutes.CartCamera,
       product: preview,
     });
 
-    navigation.navigate(CartStackRoutes.CartProduct, {
+    navigation.navigate(RootStackRoutes.CartProduct, {
       product: preview,
     });
   };
 
   const handleCheckout = () => {
     logEvent('screen_view', {
-      screen: CartStackRoutes.CartCheckout,
+      screen: RootStackRoutes.CartCheckout,
     });
 
-    navigation.navigate(CartStackRoutes.CartCheckout);
+    navigation.navigate(RootStackRoutes.CartCheckout);
   };
 
   const handleSearch = () => {
     logEvent('screen_view', {
-      screen: CartStackRoutes.CartSearch,
+      screen: RootStackRoutes.CartSearch,
     });
 
-    navigation.navigate(CartStackRoutes.CartSearch);
+    navigation.navigate(RootStackRoutes.CartSearch);
   };
 
   const handleBarcode = async (barcode: string) => {
@@ -121,7 +121,7 @@ export const CartCamera: React.FC<Props> = ({ navigation }) => {
       setPreview(product.id);
 
       logEvent('add_cart', {
-        screen: CartStackRoutes.CartCamera,
+        screen: RootStackRoutes.CartCamera,
         product: product.id,
       });
     } else {

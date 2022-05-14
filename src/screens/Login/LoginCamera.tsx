@@ -3,13 +3,14 @@ import { StyleSheet, View, Text } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { Camera } from 'expo-camera';
 import { colors, textSize, textWeight } from '../../types/theme';
-import { LoginStackRoutes, RootStackNavigationProps, RootStackRoutes } from '../../types/navigation';
+import { RootStackNavigationProps, RootStackRoutes } from '../../types/navigation';
 import { SERVER_URL } from '../../constants';
 import { useFailure } from '../../hooks/useFailure';
+import { useAnalytics } from '../../hooks/useAnalytics';
 import { useUserContext } from '../../context/UserContext';
 import { FaceCamera } from '../../components/utils/FaceCamera';
 import { HoleView } from '../../components/common/HoleView';
-import { useAnalytics } from '../../hooks/useAnalytics';
+import { Button } from '../../components/common/Button';
 
 const styles = StyleSheet.create({
   container: {
@@ -26,17 +27,26 @@ const styles = StyleSheet.create({
     fontWeight: textWeight.bold,
     fontSize: textSize['2xl'],
     color: colors.gray[500],
+    marginBottom: 10,
+  },
+  tryAgain: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  hint: {
+    color: colors.gray[500],
+    marginTop: 15,
   },
 });
 
-type Props = RootStackNavigationProps<LoginStackRoutes.LoginCamera>;
+type Props = RootStackNavigationProps<RootStackRoutes.LoginCamera>;
 
 export const LoginCamera: React.FC<Props> = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
 
   const { logEvent } = useAnalytics();
   const { setUser } = useUserContext();
-  const { failed, increaseFailure } = useFailure();
+  const { failed, increaseFailure, resetFailure } = useFailure();
 
   const handleFaceDetect = async (camera: Camera) => {
     // console.log('centered and rotated');
@@ -59,10 +69,7 @@ export const LoginCamera: React.FC<Props> = ({ navigation }) => {
           attempts: failed,
         });
 
-        navigation.popToTop();
-        navigation.navigate(RootStackRoutes.Login, {
-          screen: LoginStackRoutes.LoginWelcome,
-        });
+        navigation.navigate(RootStackRoutes.LoginWelcome);
       } else {
         console.log('not recognised');
         increaseFailure();
@@ -79,10 +86,14 @@ export const LoginCamera: React.FC<Props> = ({ navigation }) => {
       <HoleView />
       <View style={styles.textContainer}>
         {failed ? (
-          <Text style={styles.text}>Face not recognised, please try again</Text>
+          <View style={styles.tryAgain}>
+            <Text style={styles.text}>Face not recognised, please try again</Text>
+            <Button onPress={resetFailure}>Try again</Button>
+          </View>
         ) : (
           <Text style={styles.text}>{loading ? 'Processing...' : 'Searching for face...'}</Text>
         )}
+        <Text style={styles.hint}>Beards and glasses may influence the results</Text>
       </View>
     </View>
   );

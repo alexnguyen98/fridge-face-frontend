@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Alert } from 'react-native';
 import { borderRadius, colors, textSize, textWeight } from '../../types/theme';
-import { RegisterStackProps, RegisterStackRoutes } from '../../types/navigation';
-import { BarcodeCamera } from '../../components/utils/BarcodeCamera';
+import { RootStackNavigationProps, RootStackRoutes } from '../../types/navigation';
 import { useAnalytics } from '../../hooks/useAnalytics';
+import { BarcodeCamera } from '../../components/utils/BarcodeCamera';
 
 const styles = StyleSheet.create({
   container: {
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   },
 });
 
-type Props = RegisterStackProps<RegisterStackRoutes.RegisterScan>;
+type Props = RootStackNavigationProps<RootStackRoutes.RegisterScan>;
 
 export const RegistrationScan: React.FC<Props> = ({ navigation }) => {
   const { logEvent } = useAnalytics();
@@ -40,12 +40,14 @@ export const RegistrationScan: React.FC<Props> = ({ navigation }) => {
     const split = qrcode.split(':');
     if (split[1] && (split[0].includes('applifting') || split[0].includes('dxheroes'))) {
       logEvent('screen_view', {
-        screen: RegisterStackRoutes.RegisterCamera,
+        screen: RootStackRoutes.RegisterCamera,
       });
 
-      navigation.navigate(RegisterStackRoutes.RegisterCamera, {
+      navigation.navigate(RootStackRoutes.RegisterCamera, {
         user: split[1],
       });
+    } else {
+      Alert.alert('QR code not recognised');
     }
   };
 

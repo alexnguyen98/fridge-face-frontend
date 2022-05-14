@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import { useUserContext } from '../../context/UserContext';
-import { Spacer } from '../../components/common/Spacer';
-import { RootStackNavigationProps, RootStackRoutes, LoginStackRoutes, CartStackRoutes } from '../../types/navigation';
+import { RootStackNavigationProps, RootStackRoutes } from '../../types/navigation';
 import { colors, textSize, textWeight } from '../../types/theme';
 import { SERVER_URL } from '../../constants';
+import { useUserContext } from '../../context/UserContext';
+import { Spacer } from '../../components/common/Spacer';
 
 const styles = StyleSheet.create({
   container: {
@@ -27,16 +27,15 @@ const styles = StyleSheet.create({
   },
 });
 
-type Props = RootStackNavigationProps<LoginStackRoutes.LoginWelcome>;
+type Props = RootStackNavigationProps<RootStackRoutes.LoginWelcome>;
 
 export const Welcome: React.FC<Props> = ({ navigation }) => {
   const { user } = useUserContext();
 
   useEffect(() => {
     setTimeout(() => {
-      navigation.replace(RootStackRoutes.Cart, {
-        screen: CartStackRoutes.CartCamera,
-      });
+      navigation.popToTop();
+      navigation.navigate(RootStackRoutes.CartCamera);
     }, 2000);
   }, []);
 
