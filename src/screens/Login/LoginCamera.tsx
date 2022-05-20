@@ -49,7 +49,6 @@ export const LoginCamera: React.FC<Props> = ({ navigation }) => {
   const { failed, increaseFailure, resetFailure } = useFailure();
 
   const handleFaceDetect = async (camera: Camera) => {
-    // console.log('centered and rotated');
     if (loading || !camera || failed) return;
     setLoading(true);
     try {
